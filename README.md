@@ -1,4 +1,4 @@
-## Hi, I'm Anton
+## <img align="left" alt="<---" width="22px" src="https://raw.githubusercontent.com/iconic/open-iconic/master/svg/arrow-left.svg" /> This is Anton
 
 ### Hoobyist, researcher and developer
 
