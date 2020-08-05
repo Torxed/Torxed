@@ -1,6 +1,6 @@
-### Hi, I'm Anton
+## Hi, I'm Anton
 
-## Hoobyist, researcher and developer
+### Hoobyist, researcher and developer
 
 Some of my areass of interest are:
 
@@ -10,7 +10,7 @@ Some of my areass of interest are:
  * Building electric motorcycles
  * Teaching others
 
-## Different social media accounts
+### Different social media accounts
 
 [<img align="left" alt="hvornum.se" width="22px" src="https://raw.githubusercontent.com/iconic/open-iconic/master/svg/globe.svg" />][website]
 [<img align="left" alt="hvornum | StackOverflow" width="22px" src="https://cdn.jsdelivr.net/npm/simple-icons@3.4.0/icons/stackoverflow.svg" />][stackoverflow]
@@ -21,4 +21,5 @@ Some of my areass of interest are:
 [website]: https://hvornum.se
 [twitter]: https://twitter.com/luke_binwalker
 [youtube]: https://youtube.com/hvornum
+[linkedin]: https://linkedin.com/in/hvornum/
 [stackoverflow]: https://stackoverflow.com/story/hvornum
