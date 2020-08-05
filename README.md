@@ -20,6 +20,6 @@ Some of my areass of interest are:
 
 [website]: https://hvornum.se
 [twitter]: https://twitter.com/luke_binwalker
-[youtube]: https://youtube.com/hvornum
+[youtube]: http://youtube.com/c/LordAntonHvornum
 [linkedin]: https://linkedin.com/in/hvornum/
 [stackoverflow]: https://stackoverflow.com/story/hvornum
