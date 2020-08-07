@@ -4,9 +4,7 @@
 
 Some of my areass of interest are:
 
- * Low level networking *(protocols etc)*
  * Python mechanics
- * Proof-of-concept coding
  * Building electric motorcycles
  * Teaching others
  * 3D / 2D game making *(mainly using [pyglet](https://github.com/pyglet/pyglet/) and [blender](https://www.blender.org/))*
