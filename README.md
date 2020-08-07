@@ -1,6 +1,6 @@
 ## <img align="left" alt="<---" width="22px" style="padding-top: 0.1em;" src="https://raw.githubusercontent.com/iconic/open-iconic/master/svg/arrow-left.svg" /> This is Anton
 
-### Hoobyist, researcher and developer
+### Hobbyist, researcher and developer
 
 Some of my areass of interest are:
 
