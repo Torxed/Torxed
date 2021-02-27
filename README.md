@@ -17,7 +17,7 @@ Some of my areass of interest are:
 [<img align="left" alt="hvornum | YouTube" width="22px" src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/youtube.svg" />][youtube]
 [<img align="left" alt="hvornum | Twitter" width="22px" src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/twitter.svg" />][twitter]
 
-[website]: https://hvornum.se
+[website]: http://python.rip/
 [twitter]: https://twitter.com/luke_binwalker
 [youtube]: http://youtube.com/c/LordAntonHvornum
 [linkedin]: https://linkedin.com/in/hvornum/
