@@ -2,7 +2,7 @@
 
 ### Hobbyist, researcher and developer
 Creator and maintainer of [archinstall](https://github.com/archlinux/archinstall).<br>
-Some of my areass of interest are:
+Some of my areas' of interest are:
 
  * Python mechanics
  * Building electric motorcycles
