@@ -1,0 +1,10 @@
+#!/usr/bin/python
+
+import string
+import secrets
+import sys
+
+if not len(sys.argv) > 1:
+	sys.argv.append('24')
+
+print(''.join(secrets.choice(string.printable) for i in range(int(sys.argv[1]))).replace('\n', string.printable.replace('\n', '')))

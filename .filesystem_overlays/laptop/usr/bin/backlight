@@ -1,0 +1,6 @@
+#!/bin/bash
+
+MAX_BRIGHT=$(cat /sys/class/backlight/intel_backlight/max_brightness)
+BRIGHTNESS=$(python -c "print(${MAX_BRIGHT} // 100 * $1)")
+
+echo $BRIGHTNESS | sudo tee /sys/class/backlight/intel_backlight/brightness
