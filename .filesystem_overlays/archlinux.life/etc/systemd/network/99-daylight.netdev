@@ -1,14 +1,14 @@
 [NetDev]
-Name=exitnode
+Name=daylight
 Kind=wireguard
 Description=WireGuard tunnel Daylight
 
 [WireGuard]
 ListenPort=51902
-PrivateKey={privkey_for_archlinux_to_exitnode}
+PrivateKey={privkey_for_archlinux_to_daylight}
 
 [WireGuardPeer]
-PublicKey={public_key_of_exitnode}
-PresharedKey={shared_key_exitnode}
+PublicKey={public_key_of_daylight}
+PresharedKey={shared_key_daylight}
 AllowedIPs=10.0.2.6/32
 Endpoint=46.21.102.81:51871
