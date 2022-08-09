@@ -1,0 +1,2 @@
+default._domainkey.hvornum.se hvornum.se:default:/etc/opendkim/keys/hvornum.se/default.private
+default._domainkey.archlinux.life archlinux.life:default:/etc/opendkim/keys/archlinux.life/default.private
