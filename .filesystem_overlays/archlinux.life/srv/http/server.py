@@ -27,8 +27,8 @@ def config(instance):
 		'web_root' : './vhosts/default',
 		'index' : 'index.html',
 		'ssl' : {
-			'cert' : '/srv/http/fullchain.pem',
-			'key' : '/srv/http/privkey.pem',
+			'cert' : '/etc/certificates/fullchain.pem',
+			'key' : '/etc/certificates/privkey.pem',
 		},
 		'vhosts' : {
 			# Hvornum .se
