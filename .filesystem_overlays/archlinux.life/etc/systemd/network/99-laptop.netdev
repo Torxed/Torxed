@@ -1,0 +1,13 @@
+[NetDev]
+Name=laptop
+Kind=wireguard
+Description=WG tunnel to laptop
+
+[WireGuard]
+ListenPort=55815
+PrivateKey={private_key_for_archlinux_to_laptop}
+
+[WireGuardPeer]
+PublicKey={public_key_of_laptop}
+PresharedKey={shared_secret_for_laptop}
+AllowedIPs=10.55.1.2/32
