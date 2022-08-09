@@ -1,0 +1,24 @@
+*nat
+:PREROUTING DROP [355990:21394399]
+:INPUT DROP [355747:21379751]
+:OUTPUT ACCEPT [334:45776]
+:POSTROUTING DROP [332:45608]
+# General NAT masquerading on the internet interface
+-A POSTROUTING -o ens192 -j MASQUERADE
+COMMIT
+*filter
+:INPUT DROP [6:416]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [5:572]
+:sshguard - [0:0]
+# General NAT forwarding
+-A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+# SSH Guard
+-A INPUT -p tcp -m multiport --dports 21,22 -j sshguard
+# Journald reciever (for forwarded logs)
+-A INPUT ! -s 10.14.31.0/24 -p tcp -m tcp --dport 19532 -j DROP
+-A INPUT -s 10.14.31.0/24 -p tcp -m tcp --dport 19532 -j ACCEPT
+# Forwarding from devices
+-A FORWARD -i wglaptop -o ens192 -j ACCEPT
+-A FORWARD -i home -o ens192 -j ACCEPT
+COMMIT
