@@ -1,5 +1,5 @@
 [Match]
-Name=wglaptop
+Name=laptop
 
 [Network]
 Address=10.55.1.1/30
