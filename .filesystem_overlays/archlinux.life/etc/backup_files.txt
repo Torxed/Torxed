@@ -1,0 +1,1 @@
+/srv/http/discord_cache.json
