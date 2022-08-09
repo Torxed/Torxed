@@ -1,0 +1,24 @@
+passdb {
+    driver = pam
+    #args = %s
+    # [session=yes] [setcred=yes] [failure_show_msg=yes] [max_requests=<n>]
+    # [cache_key=<key>] [<service name>]
+    #args = dovecot
+}
+    #driver = passwd
+    # [blocking=no]
+    #args =
+    #driver = shadow
+    # [blocking=no]
+    #args =
+    #driver = bsdauth
+    # [blocking=no] [cache_key=<key>]
+    #args =
+userdb {
+    # <doc/wiki/AuthDatabase.Passwd.txt>
+    driver = passwd
+    # [blocking=no]
+    #args =
+    # Override fields from passwd
+    #override_fields = home=/home/virtual/%u
+}
