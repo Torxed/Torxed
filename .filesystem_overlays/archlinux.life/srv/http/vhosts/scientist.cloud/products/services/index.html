@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Evil Scientist</title>
+	<link rel="icon" type="image/png" href="/favicon.png" />
+	<meta charset="UTF-8">
+	<style type="text/css">
+		@font-face {
+			font-family: "Open Sans";
+			src: url("/fonts/OpenSans-Regular.ttf") format("truetype");
+		}
+		body {
+			position: absolute;
+			margin: 0px;
+			padding: 0px;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			min-height: 100%;
+			display: flex;
+			flex-direction: column;
+			font-family: "Open Sans";
+		}
+		.contact_btn {
+			color: #C2C2C2;
+			text-decoration: none;
+			border-bottom: 1px solid #C2C2C2;
+			cursor: pointer;
+		}
+		.container {
+			flex-direction: column;
+			width: 100%;
+		}
+		.block {
+			display: flex;
+			flex-grow: 1;
+			margin-top: auto;
+			margin-bottom: auto;
+
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: cover;
+			width: 100%;
+			background-origin: content-box;
+
+			cursor: pointer;
+		}
+
+		.motorcycles {
+			background-image: url('./images/20210716_162620.jpg');
+			min-height: 40em;
+		}
+		.electrical {
+			background-image: url('./images/vBike_v0.1.jpg');
+			min-height: 40em;
+		}
+
+		.order-form {
+			padding-left: 2em;
+			padding-right: 2em;
+			margin-left: auto;
+			margin-right: auto;
+			display: flex;
+			justify-content: center;
+			align-content: center;
+			flex-direction: column;
+			margin-bottom: 1em;
+		}
+		.order-form > form {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.fader-left {
+			background-image: linear-gradient(to right, white, white, transparent);
+			display: flex;
+			flex-direction: column;
+			margin-right: auto;
+			width: 50%;
+			padding-left: 2em;
+			padding-right: 2em;
+		}
+		.fader-left > span {
+			max-width: 40%;
+		}
+
+		.menu {
+			display: flex;
+			flex-direction: row
+		}
+		.logo {
+			background-image: url('/logo_small.jpg');
+			background-size: cover;
+			background-repeat: no-repeat;
+			width: 64px;
+			height: 64px;
+		}
+		.navigation {
+			display: flex;
+			flex-direction: row
+			justify-content: center;
+			align-content: center;
+		}
+		.nav {
+			margin-top: auto;
+			margin-bottom: auto;
+			padding-left: 0.4em;
+			cursor: pointer;
+		}
+		.nav:hover {
+			color: #C2C2C2;
+		}
+		.nav.active {
+			color: #C2C2C2;
+		}
+		.nav:not(:last-child):after {
+			content: ' >';
+		}
+
+		/* Customize the label (the container) */
+		.additionals {
+			display: block;
+			position: relative;
+			padding-left: 35px;
+			margin-bottom: 12px;
+			cursor: pointer;
+			font-size: 1.2em;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			margin-top: 0.5em;
+		}
+
+		/* Hide the browser's default checkbox */
+		.additionals input {
+			position: absolute;
+			opacity: 0;
+			cursor: pointer;
+			height: 0;
+			width: 0;
+		}
+
+		/* Create a custom checkbox */
+		.checkmark {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 25px;
+			width: 25px;
+			background-color: #eee;
+			border: 1px solid #C2C2C2;
+		}
+
+		/* On mouse-over, add a grey background color */
+		.additionals:hover input ~ .checkmark {
+			background-color: #ccc;
+		}
+
+		/* When the checkbox is checked, add a blue background */
+		.additionals input:checked ~ .checkmark {
+			background-color: #2196F3;
+		}
+
+		/* Create the checkmark/indicator (hidden when not checked) */
+		.checkmark:after {
+			content: "";
+			position: absolute;
+			display: none;
+		}
+
+		/* Show the checkmark when checked */
+		.additionals input:checked ~ .checkmark:after {
+			display: block;
+		}
+
+		/* Style the checkmark/indicator */
+		.additionals .checkmark:after {
+			left: 9px;
+			top: 5px;
+			width: 5px;
+			height: 10px;
+			border: solid white;
+			border-width: 0 3px 3px 0;
+			-webkit-transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			transform: rotate(45deg);
+		}
+		.additionals .subtitle {
+			font-size: 0.8em;
+			color: #A2A2A2;
+		}
+		.reserve-order {
+			border-radius: 0.4em;
+			padding: 1em;
+			background-color: #4caf50;
+			border: 1px solid #009688;
+			cursor: pointer;
+		}
+		.reserve-order:hover {
+			background-color: #429846;
+		}
+		.reserve-order:active {
+			background-color: #3e9041;
+		}
+		input, select {
+			padding: 0.4em;
+			margin-top: 0.2em;
+			margin-bottom: 0.2em;
+		}
+
+		.info-block {
+			display: flex;
+			align-content: center;
+			margin-top: 1em;
+		}
+		.info-block > * > span {
+			margin-top: auto;
+			margin-bottom: auto;
+		}
+
+		.range {
+			background-image: url('./images/battery.png');
+			background-position: left;
+			background-repeat: no-repeat;
+			background-size: 2em 2em;
+			padding-left: 2.2em;
+			height: 2em;
+			display: flex;
+		}
+		.acceleration {
+			background-image: url('./images/stopwatch.png');
+			background-position: left;
+			background-repeat: no-repeat;
+			background-size: 2em 2em;
+			padding-left: 2.2em;
+			height: 2em;
+			display: flex;
+		}
+		.power {
+			background-image: url('./images/horsepower.png');
+			background-position: left;
+			background-repeat: no-repeat;
+			background-size: 2em 2em;
+			padding-left: 2.2em;
+			height: 2em;
+			display: flex;
+		}
+		.speed {
+			background-image: url('./images/speed.png');
+			background-position: left;
+			background-repeat: no-repeat;
+			background-size: 2em 2em;
+			padding-left: 2.2em;
+			height: 2em;
+			display: flex;
+		}
+		.charging {
+			background-image: url('./images/power-plug.png');
+			background-position: left;
+			background-repeat: no-repeat;
+			background-size: 2em 2em;
+			padding-left: 2.2em;
+			height: 2em;
+			display: flex;
+		}
+
+		.info-block i {
+			font-size: 0.8em;
+		}
+
+		label.container {
+			display: flex;
+			flex-direction: column;
+		}
+		.wait-time-container {
+			display: flex;
+		}
+		.wait-time {
+			border: 1px solid #3f51b5;
+			background-color: #2196f3;
+			border-radius: 0.4em;
+			padding: 1em;
+			margin-bottom: 0.4em;
+			flex: 1;
+		}
+		.info {
+			flex: 1;
+			padding: 1em;
+			color: #C2C2C2;
+			font-size: 0.8em;
+			display: flex;
+			align-content: center;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.popup {
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			height: 100%;
+
+			backdrop-filter: grayscale(30%) blur(0.15em) sepia(5%);
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			align-items: center;
+		}
+
+		.popup-content {
+			background-color: #FFFFFF;
+			margin-bottom: 10%;
+			margin-top: 90%;
+			border: 1px solid #3f51b5;
+			border-radius: 0.4em;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.popup-body {
+			padding: 2em;
+		}
+
+		.popup-content .title {
+			flex: 1;
+			justify-content: center;
+			align-items: center;
+			align-content: center;
+			display: flex;
+			background-color: #2196f3;
+		}
+
+		.popup-body .description {
+			margin-bottom: 1em;
+		}
+
+		.popup-body .loader {
+			/* background-image: url('./images/loading.gif'); */
+			background-size: cover;
+			flex: 1;
+			min-height: 180px;
+		}
+
+		.contact-form {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.input {
+			margin-top: 0.4em;
+		}
+
+		.input-area {
+			margin-top: 1em;
+			min-height: 4em;
+		}
+
+		.button {
+			border-radius: 0.4em;
+			padding: 1em;
+			background-color: #4caf50;
+			border: 1px solid #009688;
+			cursor: pointer;
+			margin-top: 1em;
+		}
+		.button:hover {
+			background-color: #429846;
+		}
+		.button:active {
+			background-color: #3e9041;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="menu">
+			<div class="logo"></div>
+			<div class="navigation">
+				<div class="nav" onClick="window.location.href='/';">Home</div>
+				<div class="nav" onClick="window.location.href='/products/';">Products</div>
+				<div class="nav active" onClick="window.location.href='/products/motorcycles/';">Motorcycles</div>
+			</div>
+		</div>
+		<div class="block">
+			<span>
+				This is a square
+			</span>
+		</div>
+		<div class="block">
+			<span>
+				This is a square
+			</span>
+		</div>
+		<div class="block">
+			<div class="order-form">
+				<h3>Reserve a service</h3>
+				<input type="text" id="social_security_number" placeholder="Personal number (YYMMDD-XXXX)" value="8712100000">
+				<input type="text" id="email" placeholder="E-mail address" value="anton@scientist.cloud">
+				<input type="text" id="phone_number" placeholder="Phone number" value="0700000000">
+				<select class="dropdown model">
+					<option value="">Select a model</option>
+					<option value="Custom">Custom Motorcycle</option>
+					<option value="vBike">vBike v1.0</option>
+				</select>
+
+				<div class="options">
+					
+				</div>
+				<h3>Estimated price</h3>
+				<p class="estimated-price"></p>
+				<p>
+					<i class="summary">
+						The final price will depend heavily on what model and what options you choose.
+					</i>
+				</p>
+				<div class="wait-time-container">
+				</div>
+				<button class="reserve-order">Reserve your interest and get a quote using BankID</button>
+			</div>
+		</div>
+		<div class="block">
+			<span class="info">Moms Nr: SE871210397001 | <span class="contact_btn">Contact</span></span>
+		</div>
+	</div>
+	<script type="text/javascript">
+
+		function create_input(classname, title, description="") {
+			let container = document.createElement('div');
+			container.classList = 'additionals ' + classname;
+
+			let label = document.createElement('label');
+			label.innerHTML = title;
+			label.classList = 'container';
+
+			let checkbox = document.createElement('input');
+			checkbox.type = 'checkbox';
+			checkbox.classList = classname+'-checkbox';
+
+			let span = document.createElement('span');
+			span.classList = 'checkmark';
+
+			let subtitle = document.createElement('i');
+			subtitle.innerHTML = description;
+
+			label.appendChild(checkbox);
+			label.appendChild(span);
+
+			container.appendChild(label);
+			container.appendChild(subtitle);
+
+			return container
+		}
+
+		async function postData(url = '', data = {}) {
+			// Default options are marked with *
+			const response = await fetch(url, {
+				method: 'POST', // *GET, POST, PUT, DELETE, etc.
+				mode: 'cors', // no-cors, *cors, same-origin
+				cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+				credentials: 'same-origin', // include, *same-origin, omit
+				headers: {
+					'Content-Type': 'application/json'
+					// 'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				redirect: 'follow', // manual, *follow, error
+				referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+				body: JSON.stringify(data) // body data type must match "Content-Type" header
+			});
+			return response.json(); // parses JSON response into native JavaScript objects
+		}
+
+		function reserving_order(order_number) {
+			let popup_frame = document.createElement('div');
+			popup_frame.classList = 'popup order';
+
+			let popup_container = document.createElement('div');
+			popup_container.classList = 'popup-content';
+
+			let title = document.createElement('div');
+			title.classList = 'title';
+			title.innerHTML = 'Reserving order #' + order_number;
+
+			popup_container.appendChild(title);
+
+			let popup_body = document.createElement('div');
+			popup_body.classList = 'popup-body';
+
+			let description = document.createElement('div');
+			description.classList = 'description';
+			description.innerHTML = 'Please open your BankID and sign when you\'re ready!';
+
+			let loader = document.createElement('div');
+			loader.classList = 'loader';
+
+			popup_body.appendChild(description);
+			popup_body.appendChild(loader);
+
+			popup_container.appendChild(popup_body);
+			popup_frame.appendChild(popup_container)
+
+			document.getElementsByTagName("body")[0].appendChild(popup_frame);
+		}
+
+		function checkOrderStatus(orderRef, promise) {
+			postData('https://api.scientist.cloud/getReservationStatus', {
+					"orderRef": orderRef
+				}).then(data => {
+					promise(data);
+				});
+		}
+
+		function reserve_order() {
+			let social_security_number = document.querySelector('#social_security_number');
+			let phone_number = document.querySelector('#phone_number');
+			let email = document.querySelector('#email');
+
+			/*
+			HTTP/1.1 200 OK
+			Content-Type: application/json
+			{
+				"orderRef":"131daac9-16c6-4618-beb0-365768f37288", 
+				"autoStartToken":"7c40b5c9-fa74-49cf-b98c-bfe651f9a7c6", 
+				"qrStartToken":"67df3917-fa0d-44e5-b327-edcc928297f8", 
+				"qrStartSecret":"d28db9a7-4cde-429e-a983-359be676944c"
+			}
+			*/
+
+			let model = document.querySelector('.model').value;
+			orderDetails = {
+				"option": model,
+				"longRange": document.querySelector('.long-range-battery-checkbox').checked,
+				"motorUpgrade": document.querySelector('.powerful-motor-checkbox').checked,
+				"quickChargers": document.querySelector('.quick-charger-checkbox').checked
+			}
+
+			if (model == 'Custom') {
+				orderDetails["existingChassi"] = document.querySelector('.existing-frame-checkbox').checked
+			} else if (model == 'vBike') {
+				orderDetails["spareParts"] = document.querySelector('.second-hand-parts-checkbox').checked
+			}
+
+			if (social_security_number && social_security_number.value) {
+				reserving_order(1);
+
+				console.log("Calling /reserve !")
+				postData('https://api.scientist.cloud/reserve', {
+					"personalNumber": social_security_number.value,
+					"phoneNumber": phone_number.value,
+					"email": email.value,
+					"orderDetails": orderDetails,
+					"endUserIp": "127.0.0.1",
+					"userVisibleData": btoa("Evil Scientist - Motorcycle Reservation 1")
+				}).then(data => {
+					if(typeof data['status'] !== 'undefined' && data['status'] == 'pending') {
+						let task = null;
+						task = setInterval(() => {
+							checkOrderStatus(data['orderRef'], (data) => {
+								console.log("Promise got:", data);
+
+								if (typeof data['status'] !== 'undefined' && data['status'] == 'complete') {
+									document.querySelector('.popup-body').innerHTML = 'Order has been reserved and a confirmation e-mail is sent to you!';
+									setTimeout(() => {
+										document.querySelector('.popup').remove();
+									}, 6000);
+									clearInterval(task);
+								} else if(typeof data['status'] !== 'undefined') {
+									if (data['status'] == 'failed') {
+										document.querySelector('.popup-body').innerHTML = 'Your reservation was cancelled due to BankID signing was: ' + data['hintCode'];
+										document.querySelector('.popup-body').appendChild(document.createElement('br'));
+										document.querySelector('.popup-body').innerHTML = document.querySelector('.popup-body').innerHTML + 'If the problem persists, do contact us on [phone number] or [email]';
+									}
+									clearInterval(task);
+								} else {
+									clearInterval(task);
+								}
+							})
+						}, 5000);
+					}
+				});
+			}
+		}
+
+		window.onload = () => {
+			let model_obj = document.querySelector('.model');
+			model_obj.addEventListener('change', () => {
+				if(model_obj.value && model_obj.value == 'vBike') {
+					show_vbike_options();
+				} else if (model_obj.value && model_obj.value == 'Custom') {
+					show_custom_options();
+				} else {
+					hide_options();
+				}
+
+				update_price();
+			})
+
+			hide_options();
+			update_price();
+
+			document.querySelector('.reserve-order').addEventListener('click', () => {
+				reserve_order();
+			})
+
+			document.querySelector('.contact_btn').addEventListener('click', () => {
+				let popup_frame = document.createElement('div');
+				popup_frame.classList = 'popup order';
+
+				let popup_container = document.createElement('div');
+				popup_container.classList = 'popup-content';
+
+				let title = document.createElement('div');
+				title.classList = 'title';
+				title.innerHTML = 'Contact Evil Scientist';
+
+				popup_container.appendChild(title);
+
+				let popup_body = document.createElement('div');
+				popup_body.classList = 'popup-body';
+
+				let description = document.createElement('div');
+				description.classList = 'description';
+				description.innerHTML = 'Hi! Before you contact us, please read our <a href="/gdpr.html" target="_blank">GDPR policy</a>!<br>When you\'re ready, sign and submit your message using BankID,<br>this is so we know who we\'re talking to when answering.';
+
+				let contact_form = document.createElement('div');
+				contact_form.classList = 'contact-form';
+
+				let personal_number = document.createElement('input');
+				personal_number.classList = 'input social-security';
+				personal_number.placeholder = 'Social security number';
+
+				let email = document.createElement('input');
+				email.classList = 'input e-mail';
+				email.placeholder = 'E-mail address';
+
+				let subject = document.createElement('select');
+				subject.classList = 'input dropdown subject';
+
+				let option1 = document.createElement('option');
+				option1.value = 'Services';
+				option1.innerHTML = 'Orders & Services';
+
+				let option2 = document.createElement('option');
+				option2.value = 'GDPR';
+				option2.innerHTML = 'GDPR';
+
+				let option3 = document.createElement('option');
+				option3.value = 'General';
+				option3.innerHTML = 'General inqueries';
+
+				subject.appendChild(option1);
+				subject.appendChild(option2);
+				subject.appendChild(option3);
+
+				let free_text = document.createElement('textarea');
+				free_text.classList = 'input-area';
+				free_text.placeholder = 'Enter your message for us to read.';
+
+				let submit = document.createElement('button');
+				submit.classList = 'button';
+				submit.innerHTML = 'Sign with BankID and Submit'
+
+				contact_form.appendChild(personal_number);
+				contact_form.appendChild(email);
+				contact_form.appendChild(subject);
+				contact_form.appendChild(free_text);
+				contact_form.appendChild(submit)
+
+				popup_body.appendChild(description);
+				popup_body.appendChild(contact_form);
+
+				popup_container.appendChild(popup_body);
+				popup_frame.appendChild(popup_container)
+
+				document.getElementsByTagName("body")[0].appendChild(popup_frame);
+			})
+		}
+	</script>
+</body>
+</html>

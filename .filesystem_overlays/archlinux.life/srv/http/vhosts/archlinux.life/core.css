@@ -1,0 +1,253 @@
+:root {
+	--snow: #F6F9FC;
+	--bg: #333333;
+	--blue: #0088CC;
+	--blueLogo: #1487BD;
+	--light-blue: #33aadd;
+	--light-blue-border: #0088bb;
+
+	--links: #666666;
+	--links-hover: #FFFFFF;
+
+	--light-grey: #ecf2f5;
+	--light-grey-darker: #D4E1E8;
+	--light-grey-border: #bcd;
+
+	--complete: #8CBEB2;
+	--error: #F06060;
+	--ignored: #666666;
+	--active: #000000;
+	--yellow: #F6AA1C;
+	--queued: #fca130;
+	--skipped: #666666;
+}
+
+@font-face {
+	font-family: 'Mukta';
+	src: url(/Mukta-Regular.ttf);
+}
+
+.success {
+	color: var(--complete);
+}
+
+.error {
+	color: var(--error);
+}
+
+.pacman-conf {
+	background-color: var(--light-grey);
+	padding: 5px;
+	margin: 5px;
+	border-radius: 2px;
+	border: 1px solid var(--light-grey-darker);
+}
+
+.package {
+	display: flex;
+	flex-direction: row;
+}
+
+.package-title {
+	padding-left: 5px;
+}
+
+.buttons {
+	margin-left: auto;
+	padding: 0px;
+}
+
+.buttons > button {
+	margin: 0px;
+}
+
+body {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+
+	padding: 0px;
+	margin: 0px;
+
+	font-family: Mukta;
+}
+
+a {
+	text-decoration: none;
+	color: var(--blue);
+}
+
+.header {
+	padding: 20px;
+	background-color: var(--bg);
+	color: var(--snow);
+	border-bottom: 5px var(--blue) solid!important;
+
+	color: var(--error);
+}
+
+.header-logo {
+	float: left!important;
+	margin: 0!important;
+	padding: 0!important;
+	height: 40px!important;
+	width: 190px!important;
+	background: url(/archlogo.svg) no-repeat!important;
+	background-size: 100%!important;
+}
+
+.container {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+
+	padding-top: 20px;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	padding: 5px;
+}
+
+.section {
+	flex-grow: 0;
+}
+
+.iso::before {
+	content: 'ISO Files (unofficial)';
+	font-size: 2em;
+	color: var(--blue);
+}
+
+.packages::before {
+	content: 'ArchLife Packages';
+	font-size: 2em;
+	color: var(--blue);
+}
+
+.mirror::before {
+	content: 'Mirror definition';
+	font-size: 2em;
+	color: var(--blue);
+}
+
+.release {
+	border: 1px solid var(--links);
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-size: 0.8em;
+}
+
+.title {
+	background-color: var(--bg);
+	color: var(--links-hover);
+	padding-left: 5px;
+}
+
+.url {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+.url::before {
+	content: 'url: ';
+	color: var(--links);
+}
+
+
+
+.form-area {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	transition: all 0.3s ease;
+}
+
+.form-area.oneliner {
+	flex-direction: row !important;
+}
+.form-area.oneliner>* {
+	flex-grow: 1;
+}
+.flex-grow {
+	flex-grow: 1;
+}
+
+.input-form {
+	position: relative;
+	width: 100%;
+	height: 40px;
+	overflow: hidden;
+	display: flex;
+}
+
+.input-form input {
+	width: 100%;
+	height: 25px;
+	padding-top: 0px;
+	border: none;
+	color: #595f6e;
+	outline: none;
+	background: transparent;
+	margin-top: auto;
+}
+
+.input-form label {
+	position: absolute;
+	bottom: 0px;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	border-bottom: 1px solid #595f6e;
+	color: #595f6e;
+}
+
+	.input-form label::after {
+		content: "";
+		position: absolute;
+		left: 0px;
+		bottom: -1px;
+		height: 100%;
+		width: 100%;
+		border-bottom: 3px solid #33aadd;
+		transform: translateX(-100%);
+		transition: transform 0.3s ease;
+	}
+
+	.input-form label.bad::after {
+		border-bottom: 3px solid var(--error);
+	}
+
+.label-content {
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+
+	transition: all 0.3s ease;
+}
+
+.input-form input:focus + .label .label-content,
+.input-form input:disabled + .label .label-content,
+.input-form input:valid + .label .label-content {
+	transform: translateY(-20px);
+	font-size: 14px;
+	color: #33aadd;
+}
+
+.input-form input:focus + .label::after,
+.input-form input:disabled + .label::after,
+.input-form input:valid + .label::after {
+	transform: translateX(0%);
+}
+
+.input-form input[type=number]::-webkit-inner-spin-button, 
+.input-form input[type=number]::-webkit-outer-spin-button { 
+	-webkit-appearance: none; 
+	margin: 0; 
+}

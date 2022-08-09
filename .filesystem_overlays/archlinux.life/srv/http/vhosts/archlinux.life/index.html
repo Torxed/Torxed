@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Arch Linux Lifestyle</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8" />
+
+	<link rel="stylesheet" href="/core.css">
+	<style type="text/css">
+
+	</style>
+	<script type="text/javascript">
+		let timers = {};
+
+		function pkg_rebuild(package) {
+			fetch('https://api.archlinux.life/rebuild', {
+				method: 'POST',
+				mode: 'cors',
+				cache: 'no-cache',
+				credentials: 'same-origin',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				redirect: 'follow',
+				referrerPolicy: 'no-referrer',
+				body: JSON.stringify({'rebuild' : package})
+			}).then(response => response.json())
+			.then(data => {
+				let packages = document.querySelectorAll('.package-title');
+				console.log(packages);
+				packages.forEach((package_obj) => {
+					console.log(package_obj)
+					if (package_obj.getAttribute('packageName') == package)
+						package_obj.classList = 'package-title ' + data['rebuild'];
+				})
+			})
+		}
+
+		window.onload = function() {
+			let search = document.querySelector('#package_search');
+
+			search.addEventListener('input', (event) => {
+				if(timers['search'] !== 'undefined')
+					clearTimeout(timers['search']);
+
+				timers['search'] = setTimeout(() => {
+					console.log('Searching for: ', search.value);
+					fetch('https://api.archlinux.life/search', {
+						method: 'POST',
+						mode: 'cors', // no-cors, *cors, same-origin
+						cache: 'no-cache',
+						credentials: 'same-origin',
+						headers: {
+							'Accept': 'application/json',
+							'Content-Type': 'application/json'
+						},
+						redirect: 'follow', // manual, *follow, error
+						referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+						body: JSON.stringify({'search' : search.value}) // body data type must match "Content-Type" header
+					}).then(response => response.json())
+					.then(data => {
+						let searchresults = document.querySelector('.searchresults');
+						searchresults.innerHTML = '';
+
+						let release = document.createElement('div');
+						release.classList = 'release';
+						searchresults.appendChild(release);
+
+						let title = document.createElement('div');
+						title.classList = 'title';
+						title.innerHTML = 'Search Results';
+						release.appendChild(title);
+
+						Object.keys(data['result']).forEach((package_name) => {
+							let package = document.createElement('div');
+							package.classList = 'package';
+							release.appendChild(package);
+
+							let title = document.createElement('div');
+							title.classList = 'package-title';
+							title.innerHTML = package_name;
+							title.setAttribute('packageName', package_name);
+							package.appendChild(title);
+
+							let buttons = document.createElement('div');
+							buttons.classList = 'buttons';
+							package.appendChild(buttons);
+
+							let rebuild = document.createElement('button');
+							rebuild.innerHTML = 'Rebuild'
+							buttons.appendChild(rebuild);
+
+							rebuild.addEventListener('click', (event) => {
+								pkg_rebuild(package_name);
+							})
+						})
+					});
+				}, 200)
+			})
+		}
+	</script>
+</head>
+<body>
+	<div class="header">
+		<div class="header-logo"></div>
+		Lifestyle
+	</div>
+	<div class="container">
+		<div class="content">
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Evil Scientist</title>
+	<link rel="icon" type="image/png" href="/favicon.png" />
+	<meta charset="UTF-8">
+	<style type="text/css">
+		@font-face {
+			font-family: "Open Sans";
+			src: url("/fonts/OpenSans-Regular.ttf") format("truetype");
+		}
+		body {
+			position: absolute;
+			margin: 0px;
+			padding: 0px;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			min-height: 100%;
+			display: flex;
+			flex-direction: column;
+			font-family: "Open Sans";
+		}
+		.contact_btn {
+			color: #C2C2C2;
+			text-decoration: none;
+			border-bottom: 1px solid #C2C2C2;
+			cursor: pointer;
+		}
+		.container {
+			flex-direction: column;
+			width: 100%;
+		}
+		.block {
+			display: flex;
+			flex-grow: 1;
+			margin-top: auto;
+			margin-bottom: auto;
+
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: cover;
+			width: 100%;
+			background-origin: content-box;
+
+			cursor: pointer;
+		}
+
+		.motorcycles {
+			background-image: url('./images/20210716_162620.jpg');
+			min-height: 40em;
+		}
+		.electrical {
+			background-image: url('./images/vBike_v0.1.jpg');
+			min-height: 40em;
+		}
+
+		.order-form {
+			padding-left: 2em;
+			padding-right: 2em;
+			margin-left: auto;
+			margin-right: auto;
+			display: flex;
+			justify-content: center;
+			align-content: center;
+			flex-direction: column;
+			margin-bottom: 1em;
+		}
+		.order-form > form {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.fader-left {
+			background-image: linear-gradient(to right, white, white, transparent);
+			display: flex;
+			flex-direction: column;
+			margin-right: auto;
+			width: 50%;
+			padding-left: 2em;
+			padding-right: 2em;
+		}
+		.fader-left > span {
+			max-width: 40%;
+		}
+
+		.menu {
+			display: flex;
+			flex-direction: row
+		}
+		.logo {
+			background-image: url('/logo_small.jpg');
+			background-size: cover;
+			background-repeat: no-repeat;
+			width: 64px;
+			height: 64px;
+		}
+		.navigation {
+			display: flex;
+			flex-direction: row
+			justify-content: center;
+			align-content: center;
+		}
+		.nav {
+			margin-top: auto;
+			margin-bottom: auto;
+			padding-left: 0.4em;
+			cursor: pointer;
+		}
+		.nav:hover {
+			color: #C2C2C2;
+		}
+		.nav.active {
+			color: #C2C2C2;
+		}
+		.nav:not(:last-child):after {
+			content: ' >';
+		}
+
+		/* Customize the label (the container) */
+		.additionals {
+			display: block;
+			position: relative;
+			padding-left: 35px;
+			margin-bottom: 12px;
+			cursor: pointer;
+			font-size: 1.2em;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			margin-top: 0.5em;
+		}
+
+		/* Hide the browser's default checkbox */
+		.additionals input {
+			position: absolute;
+			opacity: 0;
+			cursor: pointer;
+			height: 0;
+			width: 0;
+		}
+
+		/* Create a custom checkbox */
+		.checkmark {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 25px;
+			width: 25px;
+			background-color: #eee;
+			border: 1px solid #C2C2C2;
+		}
+
+		/* On mouse-over, add a grey background color */
+		.additionals:hover input ~ .checkmark {
+			background-color: #ccc;
+		}
+
+		/* When the checkbox is checked, add a blue background */
+		.additionals input:checked ~ .checkmark {
+			background-color: #2196F3;
+		}
+
+		/* Create the checkmark/indicator (hidden when not checked) */
+		.checkmark:after {
+			content: "";
+			position: absolute;
+			display: none;
+		}
+
+		/* Show the checkmark when checked */
+		.additionals input:checked ~ .checkmark:after {
+			display: block;
+		}
+
+		/* Style the checkmark/indicator */
+		.additionals .checkmark:after {
+			left: 9px;
+			top: 5px;
+			width: 5px;
+			height: 10px;
+			border: solid white;
+			border-width: 0 3px 3px 0;
+			-webkit-transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			transform: rotate(45deg);
+		}
+		.additionals .subtitle {
+			font-size: 0.8em;
+			color: #A2A2A2;
+		}
+		.reserve-order {
+			border-radius: 0.4em;
+			padding: 1em;
+			background-color: #4caf50;
+			border: 1px solid #009688;
+			cursor: pointer;
+		}
+		.reserve-order:hover {
+			background-color: #429846;
+		}
+		.reserve-order:active {
+			background-color: #3e9041;
+		}
+		input, select {
+			padding: 0.4em;
+			margin-top: 0.2em;
+			margin-bottom: 0.2em;
+		}
+
+		.info-block {
+			display: flex;
+			align-content: center;
+			margin-top: 1em;
+		}
+		.info-block > * > span {
+			margin-top: auto;
+			margin-bottom: auto;
+		}
+
+		.range {
+			background-image: url('./images/battery.png');
+			background-position: left;
+			background-repeat: no-repeat;
+			background-size: 2em 2em;
+			padding-left: 2.2em;
+			height: 2em;
+			display: flex;
+		}
+		.acceleration {
+			background-image: url('./images/stopwatch.png');
+			background-position: left;
+			background-repeat: no-repeat;
+			background-size: 2em 2em;
+			padding-left: 2.2em;
+			height: 2em;
+			display: flex;
+		}
+		.power {
+			background-image: url('./images/horsepower.png');
+			background-position: left;
+			background-repeat: no-repeat;
+			background-size: 2em 2em;
+			padding-left: 2.2em;
+			height: 2em;
+			display: flex;
+		}
+		.speed {
+			background-image: url('./images/speed.png');
+			background-position: left;
+			background-repeat: no-repeat;
+			background-size: 2em 2em;
+			padding-left: 2.2em;
+			height: 2em;
+			display: flex;
+		}
+		.charging {
+			background-image: url('./images/power-plug.png');
+			background-position: left;
+			background-repeat: no-repeat;
+			background-size: 2em 2em;
+			padding-left: 2.2em;
+			height: 2em;
+			display: flex;
+		}
+
+		.info-block i {
+			font-size: 0.8em;
+		}
+
+		label.container {
+			display: flex;
+			flex-direction: column;
+		}
+		.wait-time-container {
+			display: flex;
+		}
+		.wait-time {
+			border: 1px solid #3f51b5;
+			background-color: #2196f3;
+			border-radius: 0.4em;
+			padding: 1em;
+			margin-bottom: 0.4em;
+			flex: 1;
+		}
+		.info {
+			flex: 1;
+			padding: 1em;
+			color: #C2C2C2;
+			font-size: 0.8em;
+			display: flex;
+			align-content: center;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.popup {
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			height: 100%;
+
+			backdrop-filter: grayscale(30%) blur(0.15em) sepia(5%);
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			align-items: center;
+		}
+
+		.popup-content {
+			background-color: #FFFFFF;
+			margin-bottom: 10%;
+			margin-top: 90%;
+			border: 1px solid #3f51b5;
+			border-radius: 0.4em;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.popup-body {
+			padding: 2em;
+		}
+
+		.popup-content .title {
+			flex: 1;
+			justify-content: center;
+			align-items: center;
+			align-content: center;
+			display: flex;
+			background-color: #2196f3;
+		}
+
+		.popup-body .description {
+			margin-bottom: 1em;
+		}
+
+		.popup-body .loader {
+			background-size: cover;
+			flex: 1;
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+		}
+
+		.contact-form {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.input {
+			margin-top: 0.4em;
+		}
+
+		.input-area {
+			margin-top: 1em;
+			min-height: 4em;
+		}
+
+		.button {
+			border-radius: 0.4em;
+			padding: 1em;
+			background-color: #4caf50;
+			border: 1px solid #009688;
+			cursor: pointer;
+			margin-top: 1em;
+		}
+		.button:hover {
+			background-color: #429846;
+		}
+		.button:active {
+			background-color: #3e9041;
+		}
+
+		.symbol {
+			width: 64px;
+			height: 64px;
+			background-size: contain;
+			background-repeat: no-repeat;
+			margin-left: 0.4em;
+			margin-right: 0.4em;
+		}
+		.bank-icon {
+			background-image: url('./images/bank.png');
+		}
+		.phone-icon {
+			background-image: url('./images/smartphone.png');
+		}
+		.signature-icon {
+			background-image: url('./images/contract.png');
+		}
+		/*.delivery-icon {
+			background-image: url('./images/delivery.png');
+			width: 64px;
+			height: 64px;
+			background-size: contain;
+			background-repeat: no-repeat;
+		}*/
+
+		.green-border {
+			border: 2px solid #00FF00;
+		}
+
+		.grayed-out {
+			filter: grayscale(80%);
+		}
+
+		.red-border {
+			filter: grayscale(0%);
+		}
+
+		.red-border:before, .red-border:after {
+			position: absolute;
+			content: '';
+			background: rgba(255, 0, 0, 0.5);
+			display: block;
+			width: 100%;
+			height: 15px;
+			-webkit-transform: rotate(-45deg);
+			transform: rotate(-45deg);
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			margin: auto;
+		}
+
+		.red-border:after {
+			-webkit-transform: rotate(45deg);  
+			transform: rotate(45deg);
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="menu">
+			<div class="logo"></div>
+			<div class="navigation">
+				<div class="nav" onClick="window.location.href='/';">Home</div>
+				<div class="nav" onClick="window.location.href='/products/';">Products</div>
+				<div class="nav active" onClick="window.location.href='/products/motorcycles/';">Motorcycles</div>
+			</div>
+		</div>
+		<div class="block motorcycles">
+			<div class="fader-left">
+				<h2>Custom Motorcycles</h2>
+				<span>
+					We retrofit and convert old motorcycles into electric motorcycles.<br>
+					While doing so, we also restore and re-use parts to save on cost and the environment.<br>
+					<br>
+					You also have the option to upgrade parts such as indicators and headlight, but we try to keep things as stock as possible.<br>
+					<br>
+					With this option, price will vary greatly depending on how much of the original things we can re-use. We'll evaluate your bike before a final price estimate is given.
+				</span>
+				<div class="info-block">
+					<div class="range"><span><b>Standard Range:</b> 180-220km</span></div>
+				</div>
+				<div class="info-block">
+					<div class="acceleration"><span><b>0-100km/h:</b> ~7.5 seconds</span></div>
+				</div>
+				<div class="info-block">
+					<div class="power"><span><b>Motor Power:</b> 9kW <i>(Peak 24kW)</i></span></div>
+				</div>
+				<div class="info-block">
+					<div class="speed"><span><b>Max speed:</b> 120km/h</span></div>
+				</div>
+				<div class="info-block">
+					<div class="charging"><span><b>Standard Charging:</b> 6h to fully charge</span></div>
+				</div>
+				<br>
+				<span>
+					<i>
+						All technical specifications can be upgraded or downgraded as you choose.<br>
+						The above information is based on a 240kg bike with a 80-120kg person.
+					</i>
+				</span>
+			</div>
+		</div>
+		<div class="block electrical">
+			<div class="fader-left">
+				<h2>vBike v1.0</h2>
+				<span>
+					This bike is a purpose-built electric motorcycle. Everything on this bike is designed from the ground up with electric motorcycles in mind:<br>
+					<br>
+					<ul>
+						<li>The frame is light weight yet durable for most applications <i>(Not suitable for dirtbike riding)</i>.</li>
+						<li>The airodynamic is built to maximize comfort and range.</li>
+						<li>The rider triangle is comfortable and adjustable depending on your specs (height, desired weight etc)</li>
+					</ul>
+					We try to offer cost as well as environment friendly options on all our options. This is true for the vBike as well. We offer to source used parts locally that still hold good quality for a number of years to reduce the overall cost. The standard option is still to ship the bike with brand new parts such as Öhlins dampers, Brembo breaks and brand new rims.<br>
+					But for anyone that's used to changing the oil on their old gasoline motorcycle, opting in for used parts is good for the environment and lets you service your parts yourself just like in the old days.
+				</span>
+				<div class="info-block">
+					<div class="range"><span><b>Standard Range:</b> 200-240km</span></div>
+				</div>
+				<div class="info-block">
+					<div class="acceleration"><span><b>0-100km/h:</b> 6 seconds</span></div>
+				</div>
+				<div class="info-block">
+					<div class="power"><span><b>Motor Power:</b> 9kW <i>(Peak 24kW)</i></span></div>
+				</div>
+				<div class="info-block">
+					<div class="speed"><span><b>Max speed:</b> 120km/h</span></div>
+				</div>
+				<div class="info-block">
+					<div class="charging"><span><b>Standard Charging:</b> 6h to fully charge</span></div>
+				</div>
+				<br>
+				<span>
+					<i>
+						All technical specifications can be upgraded or downgraded as you choose.<br>
+						The above information is based on a 240kg bike with a 80-120kg person.
+					</i>
+				</span>
+			</div>
+		</div>
+		<div class="block">
+			<div class="order-form">
+				<h3>Get your own motorcycle</h3>
+				<input type="text" id="social_security_number" placeholder="Personal number (YYMMDD-XXXX)" value="8712100000">
+				<input type="text" id="email" placeholder="E-mail address" value="anton@scientist.cloud">
+				<input type="text" id="phone_number" placeholder="Phone number" value="0700000000">
+				<select class="dropdown model">
+					<option value="">Select a model</option>
+					<option value="Custom">Custom Motorcycle</option>
+					<option value="vBike">vBike v1.0</option>
+				</select>
+
+				<div class="options">
+					
+				</div>
+				<h3>Estimated price</h3>
+				<p class="estimated-price"></p>
+				<p>
+					<i class="summary">
+						The final price will depend heavily on what model and what options you choose.
+					</i>
+				</p>
+				<div class="wait-time-container">
+				</div>
+				<button class="reserve-order">Reserve your interest and get a quote using BankID</button>
+			</div>
+		</div>
+		<div class="block">
+			<span class="info">Moms Nr: SE871210397001 | <span class="contact_btn">Contact</span></span>
+		</div>
+	</div>
+	<script type="text/javascript">
+
+		function create_input(classname, title, description="") {
+			let container = document.createElement('div');
+			container.classList = 'additionals ' + classname;
+
+			let label = document.createElement('label');
+			label.innerHTML = title;
+			label.classList = 'container';
+
+			let checkbox = document.createElement('input');
+			checkbox.type = 'checkbox';
+			checkbox.classList = classname+'-checkbox';
+
+			let span = document.createElement('span');
+			span.classList = 'checkmark';
+
+			let subtitle = document.createElement('i');
+			subtitle.innerHTML = description;
+
+			label.appendChild(checkbox);
+			label.appendChild(span);
+
+			container.appendChild(label);
+			container.appendChild(subtitle);
+
+			return container
+		}
+
+		function update_listeners() {
+			var inputs = document.getElementsByTagName("input");
+			for(var i = 0; i < inputs.length; i++) {
+				if(inputs[i].type == "checkbox") {
+					inputs[i].addEventListener('change', () => { update_price(); });
+				}  
+			}
+		}
+
+		function show_vbike_options() {
+			let long_range = create_input('long-range-battery', 'Long range capabilities?', 'Adds roughly +120km range on the standard <span class="range-indicator">220km')
+			let powerful_motor = create_input('powerful-motor', 'Want a more powerful motor?', 'Standard model does <a href="https://youtube.com/">0-100km/h in ~8 seconds</a> and tops out at <a href="https://youtube.com/">120km/h</a>.<br>The more powerful motor and setup does 0-100 in ~4 seconds and tops out at 180 km/h)')
+			let second_hand_parts = create_input('second-hand-parts', 'Use second hand parts?', 'We can find and locate second hand parts such as chocks in good condition which lowers the overall price.')
+			let quick_charger = create_input('quick-charger', 'Want to be able to use quick chargers?', 'This allows you to get a full charge in 2h using any type of <i>"car"</i> charging station on the road and not only 220V outlets. But the plastic alone and licensing cost 8000 SEK.<br><i>(Does not fit Testla charging stations yet)</i>')
+
+			let options = document.querySelector('.options');
+			options.innerHTML = '';
+			options.appendChild(long_range);
+			options.appendChild(powerful_motor);
+			options.appendChild(second_hand_parts);
+			options.appendChild(quick_charger);
+
+			document.querySelector('.summary').innerHTML = "The price is an estimate based on the above options and a final quote will be given before production starts."
+
+			update_listeners();
+		}
+
+		function show_custom_options() {
+			let long_range = create_input('long-range-battery', 'Long range capabilities?', 'Adds roughly +120km range on the standard <span class="range-indicator">220km')
+			let powerful_motor = create_input('powerful-motor', 'Want a more powerful motor?', 'Standard model does <a href="https://youtube.com/">0-100km/h in ~8 seconds</a> and tops out at <a href="https://youtube.com/">120km/h</a>.<br>The more powerful motor and setup does 0-100 in ~4 seconds and tops out at 180 km/h)')
+			let existing_frame = create_input('existing-frame', 'Build ontop of an existing frame?', 'For instance, we can re-use an older bike of yours.<br>Having an existing frame lowers the final price.')
+			let quick_charger = create_input('quick-charger', 'Want to be able to use quick chargers?', 'This allows you to get a full charge in 2h using any type of <i>"car"</i> charging station on the road and not only 220V outlets. But the plastic alone and licensing cost 8000 SEK.<br><i>(Does not fit Testla charging stations yet)</i>')
+
+			let options = document.querySelector('.options');
+			options.innerHTML = '';
+			options.appendChild(long_range);
+			options.appendChild(powerful_motor);
+			options.appendChild(existing_frame);
+			options.appendChild(quick_charger);
+
+			document.querySelector('.summary').innerHTML = "The price is an estimate based on the above options but may vary depending on the shape of the frame it's built ontop of.<br> Final price will be quoted before production starts once we get in contact with you to discuss breaks, choise of lights and other custom options."
+
+			update_listeners();
+		}
+
+		function hide_options() {
+			let options = document.querySelector('.options');
+			options.innerHTML = '';
+		}
+
+		async function postData(url = '', data = {}) {
+			// Default options are marked with *
+			const response = await fetch(url, {
+				method: 'POST', // *GET, POST, PUT, DELETE, etc.
+				mode: 'cors', // no-cors, *cors, same-origin
+				cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+				credentials: 'same-origin', // include, *same-origin, omit
+				headers: {
+					'Content-Type': 'application/json'
+					// 'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				redirect: 'follow', // manual, *follow, error
+				referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+				body: JSON.stringify(data) // body data type must match "Content-Type" header
+			});
+			return response.json(); // parses JSON response into native JavaScript objects
+		}
+
+		function update_price() {
+			let price = 0;
+			let model_obj = document.querySelector('.model');
+
+			if (model_obj.value) {
+				let model = model_obj.value;
+				if (model == 'Custom') {
+					price = 50000;
+				} else if (model == 'vBike') {
+					price = 80000;
+				}
+
+				let wait_time = document.createElement('span');
+				wait_time.classList = 'wait-time';
+				wait_time.innerHTML = 'Getting estimated wait time...';
+
+				document.querySelector('.wait-time-container').innerHTML = '';
+				document.querySelector('.wait-time-container').appendChild(wait_time);
+
+				postData('https://api.scientist.cloud/leadTime', {
+					"endUserIp": "127.0.0.1",
+					"model": model
+				}).then(data => {
+					console.log(data); // JSON data parsed by `data.json()` call
+					if (typeof data['wait_time'] !== 'undefined') {
+						wait_time.innerHTML = '<b>Estimated delivery time:</b> ' + data['wait_time'];
+					} else {
+						wait_time.innerHTML = 'Could not recieve wait time, we will get back to you once the order is reserved.';
+					}
+				});
+
+				if (document.querySelector('.powerful-motor-checkbox').checked) {
+					price += 10000;
+					document.querySelector('.range-indicator').innerHTML = '<font color="orange">160km</font>';
+				} else {
+					document.querySelector('.range-indicator').innerHTML = '220km';
+				}
+				
+				if (document.querySelector('.long-range-battery-checkbox').checked)
+					price += 10000;
+
+				if (document.querySelector('.existing-frame-checkbox') && document.querySelector('.existing-frame-checkbox').checked)
+					price -= 10000;
+
+				if (document.querySelector('.quick-charger-checkbox') && document.querySelector('.quick-charger-checkbox').checked)
+					price += 10000;
+
+				if (document.querySelector('.second-hand-parts-checkbox') && document.querySelector('.second-hand-parts-checkbox').checked) {
+					price -= 20000;
+					document.querySelector('.summary').innerHTML = "The price is an estimate based on the above options and what kind of second hand parts we can source.<br> A final quote will be given before production starts.<br>"
+				} else if (document.querySelector('.second-hand-parts-checkbox') && !document.querySelector('.second-hand-parts-checkbox').checked) {
+					document.querySelector('.summary').innerHTML = "The price is an estimate based on the above options and a final quote will be given before production starts."
+				}
+			} else {
+				document.querySelector('.summary').innerHTML = "The final price will depend heavily on what model and what options you choose."
+			}
+
+			document.querySelector('.estimated-price').innerHTML = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' SEK';
+		}
+
+
+		function reserving_order(order_number) {
+			let popup_frame = document.createElement('div');
+			popup_frame.classList = 'popup order';
+
+			let popup_container = document.createElement('div');
+			popup_container.classList = 'popup-content';
+
+			let title = document.createElement('div');
+			title.classList = 'title';
+			title.innerHTML = 'Reserving order';
+
+			popup_container.appendChild(title);
+
+			let popup_body = document.createElement('div');
+			popup_body.classList = 'popup-body';
+
+			let description = document.createElement('div');
+			description.classList = 'description';
+			description.innerHTML = 'Contacting your bank for a BankID session!<br>Please bare with us a few seconds while we wait for a response.';
+
+			let loader = document.createElement('div');
+			loader.classList = 'loader';
+
+			let bank = document.createElement('div');
+			bank.classList = 'symbol bank-icon green-border';
+
+			let phone = document.createElement('div');
+			phone.classList = 'symbol phone-icon grayed-out';
+
+			let signature = document.createElement('div');
+			signature.classList = 'symbol signature-icon grayed-out';
+
+			//let delivery = document.createElement('div');
+			//delivery.classList = 'symbol delivery-icon grayed-out';
+
+			loader.appendChild(bank);
+			loader.appendChild(phone);
+			loader.appendChild(signature);
+			//loader.appendChild(delivery);
+
+			popup_body.appendChild(description);
+			popup_body.appendChild(loader);
+
+			popup_container.appendChild(popup_body);
+			popup_frame.appendChild(popup_container)
+
+			document.getElementsByTagName("body")[0].appendChild(popup_frame);
+		}
+
+		function checkOrderStatus(orderRef, promise) {
+			postData('https://api.scientist.cloud/getReservationStatus', {
+					"orderRef": orderRef
+				}).then(data => {
+					promise(data);
+				});
+		}
+
+		function reserve_order() {
+			let social_security_number = document.querySelector('#social_security_number');
+			let phone_number = document.querySelector('#phone_number');
+			let email = document.querySelector('#email');
+
+			/*
+			HTTP/1.1 200 OK
+			Content-Type: application/json
+			{
+				"orderRef":"131daac9-16c6-4618-beb0-365768f37288", 
+				"autoStartToken":"7c40b5c9-fa74-49cf-b98c-bfe651f9a7c6", 
+				"qrStartToken":"67df3917-fa0d-44e5-b327-edcc928297f8", 
+				"qrStartSecret":"d28db9a7-4cde-429e-a983-359be676944c"
+			}
+			*/
+
+			let model = document.querySelector('.model').value;
+			orderDetails = {
+				"option": model,
+				"longRange": document.querySelector('.long-range-battery-checkbox').checked,
+				"motorUpgrade": document.querySelector('.powerful-motor-checkbox').checked,
+				"quickChargers": document.querySelector('.quick-charger-checkbox').checked
+			}
+
+			if (model == 'Custom') {
+				orderDetails["existingChassi"] = document.querySelector('.existing-frame-checkbox').checked
+			} else if (model == 'vBike') {
+				orderDetails["spareParts"] = document.querySelector('.second-hand-parts-checkbox').checked
+			}
+
+			if (social_security_number && social_security_number.value) {
+				reserving_order();
+
+				console.log("Calling /reserve !")
+				postData('https://api.scientist.cloud/reserve', {
+					"personalNumber": social_security_number.value,
+					"phoneNumber": phone_number.value,
+					"email": email.value,
+					"orderDetails": orderDetails,
+					"endUserIp": "127.0.0.1",
+					"userVisibleData": btoa("Evil Scientist - Motorcycle Reservation 1")
+				}).then(data => {
+					document.querySelector('.description').innerHTML = 'Please open your BankID and sign when you\'re ready!';
+					document.querySelector('.bank-icon').classList = 'symbol bank-icon';
+					document.querySelector('.phone-icon').classList = 'symbol phone-icon green-border';
+
+					if(typeof data['status'] !== 'undefined' && data['status'] == 'pending') {
+						let task = null;
+						task = setInterval(() => {
+							checkOrderStatus(data['orderRef'], (data) => {
+								console.log("Promise got:", data);
+
+								if (typeof data['status'] !== 'undefined' && data['status'] == 'pending') {
+									// Do nothing
+								} else if (typeof data['status'] !== 'undefined' && data['status'] == 'complete') {
+									document.querySelector('.phone-icon').classList = 'symbol phone-icon';
+									document.querySelector('.signature-icon').classList = 'symbol signature-icon';
+									document.querySelector('.description').innerHTML = 'Order has been reserved and a confirmation e-mail is sent to you!';
+
+									clearInterval(task);
+								} else if(typeof data['status'] !== 'undefined') {
+									if (data['status'] == 'failed' || data['status'] == 'internally-aborted') {
+										document.querySelector('.description').innerHTML = 'Your reservation was cancelled due to BankID signing was: ' + data['hintCode'];
+										document.querySelector('.description').appendChild(document.createElement('br'));
+										document.querySelector('.description').innerHTML = document.querySelector('.description').innerHTML + 'Wait a few minutes and try again.<br>If the problem persists, do contact us on [phone number] or [email]';
+
+										if(typeof data['hintCode'] !== 'undefined' && data['hintCode'] == 'userCancel') {
+											document.querySelector('.phone-icon').classList = 'symbol phone-icon';
+											document.querySelector('.signature-icon').classList = 'symbol signature-icon red-border';
+										} else if (typeof data['hintCode'] !== 'undefined' && data['hintCode'] == 'Too many BankID attempts!') {
+											document.querySelector('.bank-icon').classList = 'symbol bank-icon red-border';
+											document.querySelector('.phone-icon').classList = 'symbol phone-icon grayed-out';
+											document.querySelector('.signature-icon').classList = 'symbol signature-icon grayed-out';
+										} else {
+											document.querySelector('.phone-icon').classList = 'symbol phone-icon red-border';
+											document.querySelector('.signature-icon').classList = 'symbol signature-icon grayed-out';
+										}
+									}
+									clearInterval(task);
+								} else {
+									clearInterval(task);
+								}
+							})
+						}, 5000);
+					} else if(typeof data['status'] !== 'undefined') {
+						console.log("Something went wrong:", data);
+						document.querySelector('.description').innerHTML = 'Your reservation was cancelled due to BankID signing was: ' + data['hintCode'];
+						document.querySelector('.description').appendChild(document.createElement('br'));
+						document.querySelector('.description').innerHTML = document.querySelector('.description').innerHTML + 'Wait a few minutes and try again.<br>If the problem persists, do contact us on [phone number] or [email]';
+
+						if(typeof data['hintCode'] !== 'undefined' && data['hintCode'] == 'userCancel') {
+							document.querySelector('.phone-icon').classList = 'symbol phone-icon';
+							document.querySelector('.signature-icon').classList = 'symbol signature-icon red-border';
+						} else if (typeof data['hintCode'] !== 'undefined' && data['hintCode'] == 'Too many BankID attempts!') {
+							document.querySelector('.bank-icon').classList = 'symbol bank-icon red-border';
+							document.querySelector('.phone-icon').classList = 'symbol phone-icon grayed-out';
+							document.querySelector('.signature-icon').classList = 'symbol signature-icon grayed-out';
+						} else {
+							document.querySelector('.phone-icon').classList = 'symbol phone-icon red-border';
+							document.querySelector('.signature-icon').classList = 'symbol signature-icon grayed-out';
+						}
+					}
+				});
+			}
+		}
+
+		window.onload = () => {
+			let model_obj = document.querySelector('.model');
+			model_obj.addEventListener('change', () => {
+				if(model_obj.value && model_obj.value == 'vBike') {
+					show_vbike_options();
+				} else if (model_obj.value && model_obj.value == 'Custom') {
+					show_custom_options();
+				} else {
+					hide_options();
+				}
+
+				update_price();
+			})
+
+			hide_options();
+			update_price();
+
+			document.querySelector('.reserve-order').addEventListener('click', () => {
+				reserve_order();
+			})
+
+			document.querySelector('.contact_btn').addEventListener('click', () => {
+				let popup_frame = document.createElement('div');
+				popup_frame.classList = 'popup order';
+
+				let popup_container = document.createElement('div');
+				popup_container.classList = 'popup-content';
+
+				let title = document.createElement('div');
+				title.classList = 'title';
+				title.innerHTML = 'Contact Evil Scientist';
+
+				popup_container.appendChild(title);
+
+				let popup_body = document.createElement('div');
+				popup_body.classList = 'popup-body';
+
+				let description = document.createElement('div');
+				description.classList = 'description';
+				description.innerHTML = 'Hi! Before you contact us, please read our <a href="/gdpr.html" target="_blank">GDPR policy</a>!<br>When you\'re ready, sign and submit your message using BankID,<br>this is so we know who we\'re talking to when answering.';
+
+				let contact_form = document.createElement('div');
+				contact_form.classList = 'contact-form';
+
+				let personal_number = document.createElement('input');
+				personal_number.classList = 'input social-security';
+				personal_number.placeholder = 'Social security number';
+
+				let email = document.createElement('input');
+				email.classList = 'input e-mail';
+				email.placeholder = 'E-mail address';
+
+				let subject = document.createElement('select');
+				subject.classList = 'input dropdown subject';
+
+				let option1 = document.createElement('option');
+				option1.value = 'Services';
+				option1.innerHTML = 'Orders & Services';
+
+				let option2 = document.createElement('option');
+				option2.value = 'GDPR';
+				option2.innerHTML = 'GDPR';
+
+				let option3 = document.createElement('option');
+				option3.value = 'General';
+				option3.innerHTML = 'General inqueries';
+
+				subject.appendChild(option1);
+				subject.appendChild(option2);
+				subject.appendChild(option3);
+
+				let order_number = document.createElement('input');
+				order_number.classList = 'input order-number';
+				order_number.placeholder = 'Order number (optional)';
+
+				let free_text = document.createElement('textarea');
+				free_text.classList = 'input-area';
+				free_text.placeholder = 'Enter your message for us to read.';
+
+				let submit = document.createElement('button');
+				submit.classList = 'button';
+				submit.innerHTML = 'Sign with BankID and Submit'
+
+				contact_form.appendChild(personal_number);
+				contact_form.appendChild(email);
+				contact_form.appendChild(subject);
+				contact_form.appendChild(order_number);
+				contact_form.appendChild(free_text);
+				contact_form.appendChild(submit)
+
+				popup_body.appendChild(description);
+				popup_body.appendChild(contact_form);
+
+				popup_container.appendChild(popup_body);
+				popup_frame.appendChild(popup_container)
+
+				document.getElementsByTagName("body")[0].appendChild(popup_frame);
+			})
+		}
+	</script>
+</body>
+</html>

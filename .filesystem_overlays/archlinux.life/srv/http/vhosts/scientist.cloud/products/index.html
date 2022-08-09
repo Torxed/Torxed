@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Evil Scientist</title>
+	<link rel="icon" type="image/png" href="/favicon.png" />
+	<style type="text/css">
+		@font-face {
+			font-family: "Open Sans";
+			src: url("/fonts/OpenSans-Regular.ttf") format("truetype");
+		}
+		body {
+			position: absolute;
+			margin: 0px;
+			padding: 0px;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			font-family: "Open Sans";
+		}
+		.container {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: row;
+			flex: 2;
+			width: 100%;
+		}
+		.block {
+			display: flex;
+			flex-grow: 1;
+			margin-top: auto;
+			margin-bottom: auto;
+			justify-content: center;
+			align-items: center;
+
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 50%;
+			width: 100%;
+			background-origin: content-box;
+
+			cursor: pointer;
+		}
+		.hover {
+			background-color: #C2C2C2;
+		}
+		.hover:hover {
+			background-color: #EFEFEF;
+		}
+		.flexer {
+			display: flex;
+			flex-grow: 1;
+			margin-top: auto;
+			margin-bottom: auto;
+			height: 100%;
+
+			flex-direction: column;
+			align-items: center;
+		}
+		.motorcycles {
+			background-image: url('./images/chopper.svg');
+		}
+		span {
+			padding-top: 20em;
+			font-style: italic;
+			text-align: center;
+		}
+		.electrical {
+			/* motor by Phạm Thanh Lộc from the Noun Project */
+			background-image: url('./images/noun_motor_3385632.svg');
+		}
+		.description {
+			font-size: 2em;
+			text-align: center;
+			padding: 2em;
+		}
+		.menu {
+			display: flex;
+			flex-direction: row
+		}
+		.logo {
+			background-image: url('/logo_small.jpg');
+			background-size: cover;
+			background-repeat: no-repeat;
+			width: 64px;
+			height: 64px;
+		}
+		.navigation {
+			display: flex;
+			flex-direction: row
+			justify-content: center;
+			align-content: center;
+		}
+		.nav {
+			margin-top: auto;
+			margin-bottom: auto;
+			padding-left: 0.4em;
+			cursor: pointer;
+		}
+		.nav:hover {
+			color: #C2C2C2;
+		}
+		.nav.active {
+			color: #C2C2C2;
+		}
+		.nav:not(:last-child):after {
+			content: ' >';
+		}
+	</style>
+</head>
+<body>
+	<div class="menu">
+		<div class="logo"></div>
+		<div class="navigation">
+			<div class="nav" onClick="window.location.href='/';">Home</div>
+			<div class="nav active" onClick="window.location.href='/products/';">Products</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="hover flexer" onClick="window.location.href='/products/motorcycles/';">
+			<div class="block motorcycles">
+				<span>
+					Hand crafted eletric motorcycles of different variations.<br>
+					Everything from choppers to sport bikes.
+				</span>
+			</div>
+			<div class="description">
+				Electric Motorcycles
+			</div>
+		</div>
+		<div class="hover flexer" onClick="window.location.href='/products/services/';">
+			<div class="block electrical">
+				<span>
+					We perform service work on our sold motorcycles.<br>
+					Anything from electrical and battery to mechanical services.
+				</span>
+			</div>
+			<div class="description">
+				Repair & Services
+			</div>
+		</div>
+	</div>
+</body>
+</html>

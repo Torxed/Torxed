@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Evil Scientist</title>
+	<link rel="icon" type="image/png" href="/favicon.png" />
+	<meta charset="UTF-8">
+	<style type="text/css">
+		@font-face {
+			font-family: "Open Sans";
+			src: url("/fonts/OpenSans-Regular.ttf") format("truetype");
+		}
+		body {
+			position: absolute;
+			margin: 0px;
+			padding: 0px;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			min-height: 100%;
+			display: flex;
+			flex-direction: column;
+			font-family: "Open Sans";
+		}
+		.contact_btn {
+			color: #C2C2C2;
+			text-decoration: none;
+			border-bottom: 1px solid #C2C2C2;
+			cursor: pointer;
+		}
+		.container {
+			flex-direction: column;
+			width: 100%;
+		}
+		.block {
+			display: flex;
+			flex-grow: 1;
+			margin-top: auto;
+			margin-bottom: auto;
+
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: cover;
+			width: 100%;
+			background-origin: content-box;
+
+			cursor: pointer;
+		}
+
+		.motorcycles {
+			background-image: url('./images/20210716_162620.jpg');
+			min-height: 40em;
+		}
+		.electrical {
+			background-image: url('./images/vBike_v0.1.jpg');
+			min-height: 40em;
+		}
+
+		.order-form {
+			padding-left: 2em;
+			padding-right: 2em;
+			margin-left: auto;
+			margin-right: auto;
+			display: flex;
+			justify-content: center;
+			align-content: center;
+			flex-direction: column;
+			margin-bottom: 1em;
+		}
+		.order-form > form {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.fader-left {
+			background-image: linear-gradient(to right, white, white, transparent);
+			display: flex;
+			flex-direction: column;
+			margin-right: auto;
+			width: 50%;
+			padding-left: 2em;
+			padding-right: 2em;
+		}
+		.fader-left > span {
+			max-width: 40%;
+		}
+
+		.menu {
+			display: flex;
+			flex-direction: row
+		}
+		.logo {
+			background-image: url('/logo_small.jpg');
+			background-size: cover;
+			background-repeat: no-repeat;
+			width: 64px;
+			height: 64px;
+		}
+		.navigation {
+			display: flex;
+			flex-direction: row
+			justify-content: center;
+			align-content: center;
+		}
+		.nav {
+			margin-top: auto;
+			margin-bottom: auto;
+			padding-left: 0.4em;
+			cursor: pointer;
+		}
+		.nav:hover {
+			color: #C2C2C2;
+		}
+		.nav.active {
+			color: #C2C2C2;
+		}
+		.nav:not(:last-child):after {
+			content: ' >';
+		}
+
+		/* Customize the label (the container) */
+		.additionals {
+			display: block;
+			position: relative;
+			padding-left: 35px;
+			margin-bottom: 12px;
+			cursor: pointer;
+			font-size: 1.2em;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			margin-top: 0.5em;
+		}
+
+		/* Hide the browser's default checkbox */
+		.additionals input {
+			position: absolute;
+			opacity: 0;
+			cursor: pointer;
+			height: 0;
+			width: 0;
+		}
+
+		/* Create a custom checkbox */
+		.checkmark {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 25px;
+			width: 25px;
+			background-color: #eee;
+			border: 1px solid #C2C2C2;
+		}
+
+		/* On mouse-over, add a grey background color */
+		.additionals:hover input ~ .checkmark {
+			background-color: #ccc;
+		}
+
+		/* When the checkbox is checked, add a blue background */
+		.additionals input:checked ~ .checkmark {
+			background-color: #2196F3;
+		}
+
+		/* Create the checkmark/indicator (hidden when not checked) */
+		.checkmark:after {
+			content: "";
+			position: absolute;
+			display: none;
+		}
+
+		/* Show the checkmark when checked */
+		.additionals input:checked ~ .checkmark:after {
+			display: block;
+		}
+
+		/* Style the checkmark/indicator */
+		.additionals .checkmark:after {
+			left: 9px;
+			top: 5px;
+			width: 5px;
+			height: 10px;
+			border: solid white;
+			border-width: 0 3px 3px 0;
+			-webkit-transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			transform: rotate(45deg);
+		}
+		.additionals .subtitle {
+			font-size: 0.8em;
+			color: #A2A2A2;
+		}
+		.reserve-order {
+			border-radius: 0.4em;
+			padding: 1em;
+			background-color: #4caf50;
+			border: 1px solid #009688;
+			cursor: pointer;
+		}
+		.reserve-order:hover {
+			background-color: #429846;
+		}
+		.reserve-order:active {
+			background-color: #3e9041;
+		}
+		input, select {
+			padding: 0.4em;
+			margin-top: 0.2em;
+			margin-bottom: 0.2em;
+		}
+
+		.info-block {
+			display: flex;
+			align-content: center;
+			margin-top: 1em;
+		}
+		.info-block > * > span {
+			margin-top: auto;
+			margin-bottom: auto;
+		}
+
+		.range {
+			background-image: url('./images/battery.png');
+			background-position: left;
+			background-repeat: no-repeat;
+			background-size: 2em 2em;
+			padding-left: 2.2em;
+			height: 2em;
+			display: flex;
+		}
+		.acceleration {
+			background-image: url('./images/stopwatch.png');
+			background-position: left;
+			background-repeat: no-repeat;
+			background-size: 2em 2em;
+			padding-left: 2.2em;
+			height: 2em;
+			display: flex;
+		}
+		.power {
+			background-image: url('./images/horsepower.png');
+			background-position: left;
+			background-repeat: no-repeat;
+			background-size: 2em 2em;
+			padding-left: 2.2em;
+			height: 2em;
+			display: flex;
+		}
+		.speed {
+			background-image: url('./images/speed.png');
+			background-position: left;
+			background-repeat: no-repeat;
+			background-size: 2em 2em;
+			padding-left: 2.2em;
+			height: 2em;
+			display: flex;
+		}
+		.charging {
+			background-image: url('./images/power-plug.png');
+			background-position: left;
+			background-repeat: no-repeat;
+			background-size: 2em 2em;
+			padding-left: 2.2em;
+			height: 2em;
+			display: flex;
+		}
+
+		.info-block i {
+			font-size: 0.8em;
+		}
+
+		label.container {
+			display: flex;
+			flex-direction: column;
+		}
+		.wait-time-container {
+			display: flex;
+		}
+		.wait-time {
+			border: 1px solid #3f51b5;
+			background-color: #2196f3;
+			border-radius: 0.4em;
+			padding: 1em;
+			margin-bottom: 0.4em;
+			flex: 1;
+		}
+		.info {
+			flex: 1;
+			padding: 1em;
+			color: #C2C2C2;
+			font-size: 0.8em;
+			display: flex;
+			align-content: center;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.popup {
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			height: 100%;
+
+			backdrop-filter: grayscale(30%) blur(0.15em) sepia(5%);
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			align-items: center;
+		}
+
+		.popup-content {
+			background-color: #FFFFFF;
+			margin-bottom: 10%;
+			margin-top: 90%;
+			border: 1px solid #3f51b5;
+			border-radius: 0.4em;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.popup-body {
+			padding: 2em;
+		}
+
+		.popup-content .title {
+			flex: 1;
+			justify-content: center;
+			align-items: center;
+			align-content: center;
+			display: flex;
+			background-color: #2196f3;
+		}
+
+		.popup-body .description {
+			margin-bottom: 1em;
+		}
+
+		.popup-body .loader {
+			background-size: cover;
+			flex: 1;
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+		}
+
+		.contact-form {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.input {
+			margin-top: 0.4em;
+		}
+
+		.input-area {
+			margin-top: 1em;
+			min-height: 4em;
+		}
+
+		.button {
+			border-radius: 0.4em;
+			padding: 1em;
+			background-color: #4caf50;
+			border: 1px solid #009688;
+			cursor: pointer;
+			margin-top: 1em;
+		}
+		.button:hover {
+			background-color: #429846;
+		}
+		.button:active {
+			background-color: #3e9041;
+		}
+
+		.symbol {
+			width: 64px;
+			height: 64px;
+			background-size: contain;
+			background-repeat: no-repeat;
+			margin-left: 0.4em;
+			margin-right: 0.4em;
+		}
+		.bank-icon {
+			background-image: url('./images/bank.png');
+		}
+		.phone-icon {
+			background-image: url('./images/smartphone.png');
+		}
+		.signature-icon {
+			background-image: url('./images/contract.png');
+		}
+		/*.delivery-icon {
+			background-image: url('./images/delivery.png');
+			width: 64px;
+			height: 64px;
+			background-size: contain;
+			background-repeat: no-repeat;
+		}*/
+
+		.green-border {
+			border: 2px solid #00FF00;
+		}
+
+		.grayed-out {
+			filter: grayscale(80%);
+		}
+
+		.red-border {
+			filter: grayscale(0%);
+		}
+
+		.red-border:before, .red-border:after {
+			position: absolute;
+			content: '';
+			background: rgba(255, 0, 0, 0.5);
+			display: block;
+			width: 100%;
+			height: 15px;
+			-webkit-transform: rotate(-45deg);
+			transform: rotate(-45deg);
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			margin: auto;
+		}
+
+		.red-border:after {
+			-webkit-transform: rotate(45deg);  
+			transform: rotate(45deg);
+		}
+
+		.table {
+			display: table;
+			width: 100%;
+		}
+		.header {
+			font-weight: bold;
+		}
+		.row {
+			display: table-row;
+			flex-flow: row nowrap;
+			flex-basis: calc(100% / 3);
+			flex-grow:1;
+			flex-shrink:1;
+		}
+		.row:nth-child(even) {
+			background-color: #E2E2E2;
+		}
+		.row:nth-child(odd) {
+			background-color: #D0D0D0;
+		}
+		.column {
+			display: table-cell;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="login-form">
+			<input type="text" class="username" placeholder="username" value="anton">
+			<input type="text" class="password" placeholder="password" value="test">
+			<button class="login-button button">Login</button>
+		</div>
+	</div>
+	<script type="text/javascript">
+		let access_token = null;
+
+		// https://bradyjoslin.com/blog/encryption-webcrypto/
+		async function getPasswordKey(password) {
+			let enc = new TextEncoder(); // always utf-8
+
+			return await window.crypto.subtle.importKey(
+				"raw",
+				enc.encode(password),
+				"PBKDF2",
+				false,
+				["deriveKey"]
+			);
+		}
+
+		async function deriveKey(passwordKey, salt, keyUsage) {
+			return window.crypto.subtle.deriveKey(
+				{
+					name: "PBKDF2",
+					salt: salt,
+					iterations: 250000,
+					hash: "SHA-256",
+				},
+				passwordKey,
+				{ name: "AES-GCM", length: 256 },
+				false,
+				keyUsage
+			);
+		}
+
+		async function encryptData(password, salt, iv) {
+			let enc = new TextEncoder(); // always utf-8
+
+			try {
+				//const salt = window.crypto.getRandomValues(new Uint8Array(16));
+				const passwordKey = await getPasswordKey(password);
+				const aesKey = await deriveKey(passwordKey, enc.encode(salt), ["encrypt"]);
+				const encryptedContent = await window.crypto.subtle.encrypt({
+					name: "AES-GCM",
+					iv: enc.encode(iv),
+				}, aesKey, new TextEncoder().encode(password));
+
+				const encryptedContentArr = new Uint8Array(encryptedContent);
+
+				return encryptedContentArr;
+			} catch(e) {
+				console.log('Error:', e);
+			}
+		}
+
+		async function postData(url = '', data = {}) {
+			// Default options are marked with *
+			const response = await fetch(url, {
+				method: 'POST', // *GET, POST, PUT, DELETE, etc.
+				mode: 'cors', // no-cors, *cors, same-origin
+				cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+				credentials: 'same-origin', // include, *same-origin, omit
+				headers: {
+					'Content-Type': 'application/json'
+					// 'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				redirect: 'follow', // manual, *follow, error
+				referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+				body: JSON.stringify(data) // body data type must match "Content-Type" header
+			});
+			return response.json(); // parses JSON response into native JavaScript objects
+		}
+
+		function show_orders() {
+			postData('https://api.scientist.cloud/orderHistory', {
+					"token" : access_token
+				}).then(data => {
+					let table = document.createElement('div');
+					table.classList = 'table';
+
+					let row = document.createElement('div');
+					row.classList = 'row';
+
+					let email = document.createElement('div');
+					email.classList = 'column header';
+					email.innerHTML = 'Contact E-Mail';
+
+					let product_name = document.createElement('div');
+					product_name.classList = 'column header';
+					product_name.innerHTML = 'Product Name';
+
+					let order = document.createElement('div');
+					order.classList = 'column header';
+					order.innerHTML = 'Order Details';
+
+					row.appendChild(email);
+					row.appendChild(product_name);
+					row.appendChild(order);
+					table.appendChild(row);
+
+					data['orders'].forEach((order_info) => {
+						console.log(order_info);
+
+						let row = document.createElement('div');
+						row.classList = 'row';
+
+						let email = document.createElement('div');
+						email.classList = 'column';
+						email.innerHTML = order_info['email'];
+
+						let product_name = document.createElement('div');
+						product_name.classList = 'column';
+						product_name.innerHTML = order_info['product_name'];
+
+						let order = document.createElement('div');
+						order.classList = 'column';
+						order.innerHTML = JSON.stringify(order_info['orderspecs']);
+
+						row.appendChild(email);
+						row.appendChild(product_name);
+						row.appendChild(order);
+						table.appendChild(row);
+					});
+
+					document.querySelector('.container').appendChild(table);
+				}
+			);
+		}
+
+		window.onload = () => {
+			document.querySelector('.login-button').addEventListener('click', () => {
+				postData('https://api.scientist.cloud/authenticate', {
+						"user" : document.querySelector('.username').value
+					}).then(data => {
+						console.log(data);
+						encryptData(document.querySelector('.password').value, data['salt'], data['iv']).then((data) => {
+							let pwhash = btoa(String.fromCharCode.apply(null, data));
+							console.log(pwhash);
+							
+							postData('https://api.scientist.cloud/authenticate', {
+									"user" : document.querySelector('.username').value,
+									"password" : pwhash
+								}).then(data => {
+									if(typeof data['token'] !== 'undefined') {
+										access_token = data['token'];
+										document.querySelector('.login-form').remove();
+
+										show_orders();
+									}
+								}
+							);
+						});
+					}
+				);
+			})
+		}
+	</script>
+</body>
+</html>

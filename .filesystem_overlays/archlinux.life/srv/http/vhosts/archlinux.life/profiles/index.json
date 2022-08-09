@@ -1,0 +1,11 @@
+{
+	"gitlab.py" : "A GitLab basic installation",
+	"slimhttp.py" : "Creates a webserver based on slimhttp",
+	"archmirror.py" : "Creates a Arch Linux mirror using slimhttp",
+	"postgresql.py" : "Creates a PostgreSQL instance.",
+	"FE-00-00-00-00-00.py" : "Sets up bigrig",
+	"08-00-27-07-8C-94.py" : "Sets up a mirror",
+	"08-00-27-54-8E-4F.py" : "Tests dualboot",
+	"08-00-27-31-72-95.py" : "PostgreSQL",
+	"08-00-27-4B-02-F8.py" : "GitLab"
+}

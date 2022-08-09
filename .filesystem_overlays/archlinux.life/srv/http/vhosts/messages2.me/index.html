@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Messages2me</title>
+	<link rel="icon" type="image/png" href="/favicon.png" />
+	<meta charset="UTF-8">
+	<script type="module" src="/messages2.me-sdk.js"></script>
+	<style type="text/css">
+		@font-face {
+			font-family: "Open Sans";
+			src: url("/fonts/OpenSans-Regular.ttf") format("truetype");
+		}
+		html, body {
+			position: relative;
+			margin: 0px;
+			padding: 0px;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			height: 100%;
+			min-height: 100%;
+			display: flex;
+			flex-direction: column;
+			font-family: "Open Sans";
+		}
+		input, select {
+			padding: 0.4em;
+			margin-top: 0.2em;
+			margin-bottom: 0.2em;
+		}
+
+		.contact_btn {
+			color: #C2C2C2;
+			text-decoration: none;
+			border-bottom: 1px solid #C2C2C2;
+			cursor: pointer;
+		}
+		.container {
+			display: table;
+			width: 100%;
+			height: 100%;
+		}
+		.row {
+			display: table-row;
+			flex-flow: row nowrap;
+			flex-basis: calc(100% / 3);
+			flex-grow:1;
+			flex-shrink:1;
+		}
+		.column {
+			display: table-cell;
+		}
+		.block {
+			display: flex;
+			flex-grow: 1;
+			margin-top: auto;
+			margin-bottom: auto;
+
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: cover;
+			width: 100%;
+			background-origin: content-box;
+
+			cursor: pointer;
+		}
+
+		.button {
+			border-radius: 0.4em;
+			padding: 0.5em;
+			padding-left: 1em;
+			padding-right: 1em;
+			background-color: #4caf50;
+			border: 1px solid #009688;
+			cursor: pointer;
+			color: #FFFFFF;
+		}
+		.button:hover {
+			background-color: #429846;
+		}
+		.button:active {
+			background-color: #3e9041;
+		}
+		.content-flexbox {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+		}
+		.profile-container {
+			margin-top: auto;
+			display: flex;
+			align-items: center;
+		}
+		.input-area {
+			margin-top: auto;
+			display: flex;
+			align-items: center;
+		}
+		.input {
+			flex: 1;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="login-form">
+			<input type="text" class="username" placeholder="username" value="anton">
+			<input type="text" class="password" placeholder="password" value="test">
+			<button class="login-button button">Login</button>
+		</div>
+	</div>
+	<script type="text/javascript">
+		let message_retriever = null;
+
+		// TODO: I want a feed as a start page, showing the last 2-3 messages from all channels
+
+		function render_messages(room_id) {
+			let room_content = document.querySelector('.room-content');
+			let room_content_flexer = null;
+			if(document.querySelector('.room-content-flexbox')) {
+				room_content_flexer = document.querySelector('.room-content-flexbox');
+			} else {
+				room_content_flexer = document.createElement('div');
+				room_content_flexer.classList = 'content-flexbox room-content-flexbox';
+			}
+
+			let message_containers = Array.prototype.slice.call(room_content_flexer.querySelectorAll('.message-object'));
+
+			rooms[room_id]['messages'].forEach((message_blob) => {
+				if (document.querySelector('div[message-id="'+message_blob['message_id']+'"]'))
+					return;
+
+				let existing = false;
+				if(message_containers.length > 0 && message_containers.slice(-1)[0].querySelector('.sender').getAttribute('member-id') == message_blob['sender']) {
+					message_container = message_containers.slice(-1)[0];
+					existing = true;
+				} else {
+					message_container = document.createElement('div');
+					message_container.classList = 'message-object';
+
+					let sender = document.createElement('div');
+					sender.classList = 'sender';
+					sender.innerHTML = rooms[room_id]['members'][message_blob['sender']]['displayname'];
+					sender.setAttribute('member-id', message_blob['sender']);
+					message_container.appendChild(sender);
+
+					message_containers.push(message_container);
+				}
+				
+				let message_data = document.createElement('div');
+				message_data.classList = 'message-data';
+				message_data.innerHTML = JSON.parse(message_blob['data'])['message'];
+				message_data.setAttribute('message-id', message_blob['message_id'])
+
+				message_container.appendChild(message_data);
+				if(!existing) {
+					room_content_flexer.appendChild(message_container);
+				} else {
+					if(document.querySelector('.input-area'))
+						room_content_flexer.insertBefore(message_container, document.querySelector('.input-area'));
+					else
+						room_content_flexer.appendChild(message_container);
+				}
+			})
+
+			if(!document.querySelector('.input-area')) {
+				let input_area = document.createElement('div');
+				input_area.classList = 'input-area';
+
+				let message_input = document.createElement('input');
+				let message_send = document.createElement('button');
+
+				message_input.classList = 'input';
+				message_send.classList = 'button';
+
+				message_send.innerHTML = 'Send Message'
+				message_send.addEventListener('click', () => {
+					send_message(message_input.value);
+				});
+
+				input_area.appendChild(message_input);
+				input_area.appendChild(message_send);
+				room_content_flexer.appendChild(input_area)
+			}
+
+			if(!document.querySelector('.room-content-flexbox')) {
+				room_content.appendChild(room_content_flexer);
+			}
+		}
+
+		function render_members(room_id) {
+			let room_meta = document.querySelector('.room-meta');
+			room_meta.innerHTML = '';
+			Object.keys(rooms[room_id]['members']).forEach((member_id) => {
+				let member_info = rooms[room_id]['members'][member_id];
+				let role_group = document.querySelector('.role-'+member_info['role']);
+				if(!role_group) {
+					role_group = document.createElement('div');
+					room_meta.appendChild(role_group);
+				}
+				role_group.classList = 'role ' + member_info['role'];
+
+				let member_container = document.createElement('div');
+				member_container.classList = 'member-info';
+				
+				let profile_pic = document.createElement('div');
+				profile_pic.classList = 'profile_pic';
+				profile_pic.style.backgroundImage = `url('${member_info['profile_pic']}')`;
+
+				let member_displayname = document.createElement('div');
+				member_displayname.classList = 'member-name';
+				member_displayname.innerHTML = member_info['displayname'];
+				member_displayname.setAttribute('member-id', member_info['identity'])
+
+				member_container.appendChild(profile_pic);
+				member_container.appendChild(member_displayname);
+				role_group.appendChild(member_container);
+			})
+		}
+
+		function render_rooms() {
+			let room_listing = document.querySelector('.room-listing')
+			let room_listing_flexbox = document.createElement('div');
+			room_listing_flexbox.classList = 'content-flexbox';
+
+			Object.keys(rooms).forEach((room_id) => {
+				let room_id_container = document.createElement('div')
+				room_id_container.classList = 'room-id-container'
+
+				let room_identifier = document.createElement('div')
+				room_identifier.classList = 'room-id'
+				room_identifier.setAttribute('room_identifier', room_id)
+				room_identifier.innerHTML = rooms[room_id]['meta']['identity']
+
+				room_id_container.appendChild(room_identifier)
+				room_listing_flexbox.appendChild(room_id_container)
+
+				if(rooms[room_id]['meta']['active']) {
+					active_room = room_id
+				}
+			})
+
+			let profile_container = document.createElement('div');
+			profile_container.classList = 'profile-container';
+
+			let profile_pic = document.createElement('div');
+			let profile_name = document.createElement('div');
+			let profile_settings = document.createElement('div');
+
+			profile_pic.classList = 'profile-pic'
+			profile_name.classList = 'profile-name'
+			profile_settings.classList = 'profile-settings'
+
+			profile_name.innerHTML = 'Anton Hvornum'
+
+			profile_container.appendChild(profile_pic);
+			profile_container.appendChild(profile_name);
+			profile_container.appendChild(profile_settings);
+
+			room_listing_flexbox.appendChild(profile_container);
+			room_listing.appendChild(room_listing_flexbox);
+
+			if(active_room) {
+				get_messages(active_room, null, render_messages);
+				get_members(active_room, render_members);
+			}
+		}
+
+		function setup_main_layout() {
+			let room_listing = document.createElement('div');
+			room_listing.classList = 'column room-listing';
+
+			let room_content = document.createElement('div');
+			room_content.classList = 'column room-content';
+
+			let room_meta = document.createElement('div');
+			room_meta.classList = 'column room-meta';
+
+			let inside_row = document.createElement('div');
+			inside_row.classList = 'row';
+
+			inside_row.appendChild(room_listing);
+			inside_row.appendChild(room_content);
+			inside_row.appendChild(room_meta);
+			document.querySelector('.container').appendChild(inside_row);
+		}
+
+		window.onload = () => {
+			document.querySelector('.login-button').addEventListener('click', () => {
+				console.info("Logging as " + document.querySelector('.username').value);
+				login(document.querySelector('.username').value, document.querySelector('.password').value, (data) => {
+					if(typeof data['token'] !== 'undefined') {
+						access_token = data['token'];
+						document.querySelector('.login-form').remove();
+						setup_main_layout();
+
+						get_rooms(render_rooms);
+					}
+				});
+			})
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- rip is the art of extracting useful data from say a CD or DVD, not killing things! -->
+	<title>Python.rip</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/svg+xml" href="/r/i/python.icon.svg">
+	<meta name="description" content="Python blog">
+	<meta name="keywords" content="Python, Blog, Articles, Programming, performance, snippets, code, with, python, crazy">
+	<meta name="author" content="Anton Hvornum">
+	<!--<link rel="alternate icon" href="/favicon.ico">-->
+	<link rel="mask-icon" href="/r/i/python.icon.svg" color="#ff8a01">
+	<link rel="stylesheet" href="/r/c/default.css">
+	<style type="text/css">
+		/*
+			"Python" and the Python logos are trademarks or registered trademarks of the Python Software Foundation, used by Anton Hvornum with permission from the Foundation.
+		*/
+		body, html {
+			display: flex;
+			flex-direction: row;
+			position: absolute;
+			margin: 0px;
+			padding: 0px;
+			width: 100%;
+			height: 100%;
+
+			font-family: monospace;
+		}
+
+		@media (min-width: 360px) {
+			body {
+				font-size: 1.0em;
+			}
+		}
+
+		.container {
+			display: flex;
+		}
+
+		.side {
+			display: flex;
+			flex-direction: column;
+			padding: 30px;
+		}
+
+		.left {
+			flex-grow: 0;
+			max-width: 15em;
+			min-width: 15em;
+		}
+		.right {
+			flex-grow: 1;
+		}
+		.logo {
+			background-image: url('/r/i/python.logo.svg');
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: cover;
+			height: 4.3em;
+		}
+
+		.menu ul{
+			list-style: none;
+			padding: 0px;
+		}
+
+		.menu {
+			display: flex;
+			flex-direction: column;
+		}
+		
+		.page-description {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			min-width: 0;
+		}
+
+		.header {
+			background-color: #EEEEEE;
+		}
+
+		.package {
+			background-image: url('/r/i/python.package.svg');
+			background-repeat: no-repeat;
+			padding-left: 1.1em;
+		}
+
+		.small-list li {
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+
+		.code {
+			background-color: #282923;
+			color: #FFFFFF;
+			padding: 2px;
+			font-size: 105%;
+			font-family: monospace;
+			padding: 0.7em;
+			margin-top: 0.2em;
+			margin-bottom: 0.2em;
+			
+			white-space: pre;
+			display: block;
+			unicode-bidi: embed;
+
+			tab-size: 4;
+		}
+
+		.article {
+			margin-bottom: 5em;
+		}
+
+		.wrappable {
+			white-space: pre-wrap !important;
+		}
+
+		.article-body {
+			white-space: pre-wrap;
+			display: block;
+			unicode-bidi: embed;
+
+			min-width: 0;
+			word-wrap: break-word;
+
+		}
+
+		.article-headline {
+			font-size: 3em;
+		}
+		.article-description {
+			font-style: italic;
+			margin-bottom: 2em;
+		}
+
+		.notification {
+			margin-top: 0.2em;
+		}
+		.notification {
+			
+		}
+		.blue-ring {
+			background-color: #e7f2fa;
+			padding: 1em;
+			border-radius: 0.6em;
+		}
+		.blue-ring:before {
+			content: "ℹ️"
+		}
+		.warning:before {
+			content: "⚠️"
+		}
+		.red-ring {
+			background-color: #ffedcc;
+			padding: 1em;
+			border-radius: 0.6em;
+		}
+
+		inline {
+			background-color: #ffbdd573;
+			padding-left: 0.25em;
+			padding-right: 0.25em;
+			font-style: italic;
+		}
+		a {
+			text-decoration: none;
+		}
+
+		.foot {
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+		}
+		.snake {
+			/* https://www.svgrepo.com/svg/289284/snake */
+			background-image: url('/r/i/snake.svg');
+			background-repeat: no-repeat;
+			width: 2em;
+			width: 2em;
+			height: 2em;
+		}
+		.creative-commons {
+			/* https://creativecommons.org/licenses/by/4.0/ */
+			background-image: url('/r/i/creative-commons.logo.svg');
+			background-repeat: no-repeat;
+			width: 6em;
+			height: 1.5em;
+		}
+
+		
+		.hljf-function-definition, .hljs-built_in {
+			color: #67d8ef;
+		}
+		.hljs-keyword {
+			color: #f92472;
+		}
+		.hljs-title {
+			color: #a6e22b;
+		}
+		.hljs-class, .hljs-function, .python {
+			color: #FFFFFF;
+		}
+		.hljs-params {
+			color: #fd9622;
+		}
+		.hljs-literal {
+			color: #ac80ff;
+		}
+		.hljs-number {
+			color: #ac80ff;
+		}
+		.hljs-string {
+			color: #e7db74;
+		}
+		.hljs-subst {
+			color: #FFFFFF;
+		}
+
+	</style>
+	<script src="/r/j/highlight.pack.js"></script>
+	<script id="dynamicJSONLD" type="application/ld+json">
+		[{ "@context": "https://schema.org", 
+			"@type": "BlogPosting",
+			"headline": "Compiling C code from Python runtime",
+			"alternativeHeadline": "python Compiling C code from Python runtime",
+			"image": "http://python.rip/r/i/python.icon.svg",
+			"editor": "Anton Hvornum",
+			"wordcount": 9882,
+			"url": "http://python.rip/?headline=Compiling C code from Python runtime",
+			"datePublished": "2021-03-07",
+			"dateCreated": "2021-03-07",
+			"dateModified": "2021-03-07",
+			"inLanguage": "en-US",
+			"description": "May the source be with you! We'll go through what's nesscary to run C code from a Python runtime.",
+			"author": {
+				"@type": "Person",
+				"name": "Anton Hvornum",
+				"url": "https://hvornum.se"
+			},
+			"contentLocation": {
+				"@type": "Place",
+				"name": "Stockholm, Sweden"
+			},
+			"accountablePerson": {
+				"@type": "Person",
+				"name": "Anton Hvornum",
+				"url": "https://hvornum.se"
+			},
+			"creator": {
+				"@type": "Person",
+				"name": "Anton Hvornum",
+				"url": "https://hvornum.se"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "Anton Hvornum",
+				"url": "https://hvornum.se",
+				"logo": {
+					"@type": "ImageObject",
+					"url": "https://hvornum.se/861439.jfif",
+					"width":"460",
+					"height":"460"
+				}
+			},
+			"mainEntityOfPage": "True",
+			"genre": ["python", "c", "c++", "module", "compile", "library", "source", "code", "runtime", "live"],
+			"keywords": [
+				"python", "c", "c++", "module", "compile", "library", "source", "code", "runtime", "live"
+			],
+			"articleSection": "python c c++ module compile library source code runtime live"
+		},
+
+		{ "@context": "https://schema.org", 
+			"@type": "BlogPosting",
+			"headline": "Patching Python builtin functions",
+			"alternativeHeadline": "python Patching Python builtin functions",
+			"image": "http://python.rip/r/i/python.icon.svg",
+			"editor": "Anton Hvornum",
+			"wordcount": 6200,
+			"url": "http://python.rip/?headline=Patching Python builtin functions",
+			"datePublished": "2021-02-27",
+			"dateCreated": "2021-02-27",
+			"dateModified": "2021-02-27",
+			"inLanguage": "en-US",
+			"description": "Ever felt you were missing built in functions in Python? Wish you had more options? Well you do now, call 555-breaking-changes today!",
+			"author": {
+				"@type": "Person",
+				"name": "Anton Hvornum",
+				"url": "https://hvornum.se"
+			},
+			"contentLocation": {
+				"@type": "Place",
+				"name": "Stockholm, Sweden"
+			},
+			"accountablePerson": {
+				"@type": "Person",
+				"name": "Anton Hvornum",
+				"url": "https://hvornum.se"
+			},
+			"creator": {
+				"@type": "Person",
+				"name": "Anton Hvornum",
+				"url": "https://hvornum.se"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "Anton Hvornum",
+				"url": "https://hvornum.se",
+				"logo": {
+					"@type": "ImageObject",
+					"url": "https://hvornum.se/861439.jfif",
+					"width":"460",
+					"height":"460"
+				}
+			},
+			"mainEntityOfPage": "True",
+			"genre": ["python", "builtins", "override", "hack"],
+			"keywords": [
+				"python",
+				"builtins",
+				"override",
+				"hack"
+			],
+			"articleSection": "python builtins override hack"
+		},
+
+		{ "@context": "https://schema.org", 
+			"@type": "BlogPosting",
+			"headline": "Reloading Source Code in Runtime",
+			"alternativeHeadline": "python Reloading Source Code in Runtime",
+			"image": "http://python.rip/r/i/python.icon.svg",
+			"editor": "Anton Hvornum",
+			"wordcount": 4621,
+			"url": "http://python.rip/?headline=Reloading Source Code in Runtime",
+			"datePublished": "2021-02-27",
+			"dateCreated": "2021-02-27",
+			"dateModified": "2021-02-27",
+			"inLanguage": "en-US",
+			"description": "If you want the flame of a thousand gods coming your way but the speed of a rocket when reloading source code, why not do it manually?",
+			"articleBody": "Lets start off by setting the scene. It was a cold Swedish winter night, and you need to reload a submodule in runtime..\nYou've got a pretty much standard project with a main file, a submodule and a configuration file.\n\nThe main file simply prints a value, randomizes it and prints it again. And the code might look something like this:\n\nimport testconfig\nimport submodule\n\nif 'key' in testconfig.some_variable:\n	print('Startvalue:', testconfig.some_variable['key'])\n	submodule.randomize()\n	print('Endvalue:', testconfig.some_variable['key'])\n\nend = time.time()\n\nThe submodule is not much more advanced:\nimport random\nimport testconfig\n\ndef randomize():\n	if 'key' in testconfig.some_variable:\n		testconfig.some_variable['key'] = random.randint(0, 10)\n\nFinally, our example configuration as follows:\nsome_variable = {\n	'key' : 0\n}\n\nWhich produces a shocking output of:\n$ python test.py\nStartvalue: 0\nEndvalue: 5\n\nThis is arguably the most common and useful way to share data between modules in a synced manner.\nBut what if you want to load this dynamically, in say a web server, where the submodule (and subsequently) the config is re-imported several times per second?\n\nWe can ofcourse use importlib.reload() to achieve this, by modifying the code slightly.\nWe'll emulate 10K imports/reloads and to time it we'll throw a simpler timer into the mix so we can see the execution time.\nimport time\nimport importlib\n\nstart = time.time()\nimport testconfig\n\nif 'key' in testconfig.some_variable:\n	print('Startvalue:', testconfig.some_variable['key'])\n	for i in range(10000):\n		import submodule\n		importlib.reload(submodule)\n		submodule.randomize()\n	print('Endvalue:', testconfig.some_variable['key'])\n\nend = time.time()\nprint(f\"Total time: {end-start}\")\n\nWhich on the test machine in this case will land on 2.319 seconds for a full run.\nIf this was a web server, that would means we can support roughly 4300 users per second not counting the rest of the webserver code.\n\nThis is still a bit to slow if we want to compete against the likes of lighttpd or nginx.\n(disclaimer: don't write your own webserver, use one of the two above or whatever is hip when you're reading this)\n\nSo how can we improve source code loading from here?\nWell, we could skip the fancy helpers and go straight to the motherdough, the importlib.util magic.\nNote that going \"low\", means there's a high probability that this will break in any minor or major version upgrade.\nThe developers tend to not support the little guy that does ground breaking development (ironic), so use the wrappers in production!\n\nAnyway, optmizing the code:\nimport sys\nimport time\nimport importlib.util\n\nstart = time.time()\nimport testconfig\n\nif 'key' in testconfig.some_variable:\n	print('Startvalue:', testconfig.some_variable['key'])\n	for i in range(10000):\n		spec = importlib.util.spec_from_file_location(\"submodule\",\"./submodule.py\")\n		submodule = sys.modules[\"submodule\"] = importlib.util.module_from_spec(spec)\n		spec.loader.exec_module(submodule)\n		submodule.randomize()\n	print('Endvalue:', testconfig.some_variable['key'])\n\nend = time.time()\nprint(f\"Total time: {end-start}\")\n\nHere, we tap in to importlib.util.spec_from_file() to load the source code straight, no automagic protecting us.\nAnd if we run this snippet, we'll average around 1.734 seconds per import/reload.\nNot bad, that's 5700 users per second give or take depending on a few 56k modem users draging out our CPU cycles if we're not threaded.\n\nWould you ever need this? Probably not. Would it work for previous to 3.9? Maybe, probably not.\nStick to importlib.reload() if you don't want things to break unexpectedly.\n\nBut I'll end on another fun note.\nSince you have control over the namespace in which you import the module, you can change the bavior of:\nif __name__ == \"submodule\":\n	...\n\nSince this is dependant on the namespace of the module during import, modifying importlib.util.spec_from_file_location(\"submodule\", \"./submodule.py\") to something like importlib.util.spec_from_file_location(\"submodule.py\", \"./submodule.py\") means you can import the module and avoid the if __name__ check to trigger.\n\nYou could also use this to load source code from a remote HTTP source, not that that's ever a good idea. But you could. But you shouldn't!\n\nDo not ever, ever! Import unverified source code. It's a quick way to get rekt!\n\nIt does support absolute paths, which is pretty neat.\nIt means you can locate and force imports based on paths instead of whatever the sys.path says.\nGlobal variables and local variables however is a different story, one we'll skip for this already long story.",
+			"author": {
+				"@type": "Person",
+				"name": "Anton Hvornum",
+				"url": "https://hvornum.se"
+			},
+			"contentLocation": {
+				"@type": "Place",
+				"name": "Stockholm, Sweden"
+			},
+			"accountablePerson": {
+				"@type": "Person",
+				"name": "Anton Hvornum",
+				"url": "https://hvornum.se"
+			},
+			"creator": {
+				"@type": "Person",
+				"name": "Anton Hvornum",
+				"url": "https://hvornum.se"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "Anton Hvornum",
+				"url": "https://hvornum.se",
+				"logo": {
+					"@type": "ImageObject",
+					"url": "https://hvornum.se/861439.jfif",
+					"width":"460",
+					"height":"460"
+				}
+			},
+			"mainEntityOfPage": "True",
+			"genre": ["python", "source-code", "reloading", "performance"],
+			"keywords": [
+				"python",
+				"source-code",
+				"reloading",
+				"performance"
+			],
+			"articleSection": "python performance source code reloading"
+		},
+
+		{ "@context": "https://schema.org", 
+			"@type": "BlogPosting",
+			"headline": "Context Managers",
+			"alternativeHeadline": "python Context Managers",
+			"image": "http://python.rip/r/i/python.icon.svg",
+			"editor": "Anton Hvornum",
+			"wordcount": 1945,
+			"url": "http://python.rip/?headline=Context Managers",
+			"datePublished": "2021-02-26",
+			"dateCreated": "2021-02-26",
+			"dateModified": "2021-02-27",
+			"inLanguage": "en-US",
+			"description": "Why Context Managers might be a bad idea, but also why they might be fantastic.",
+			"articleBody": "Given the following code:\nclass WithContext():\n	def __init__(self):\n		self.value = 5\n\n	def __enter__(self):\n		return self\n\n	def __exit__(self, *args, **kwargs):\n		if args and args[1] == KeyError:\n			pass\n		return True\n\n	def multiply(self):\n		return self.value * 2\n\n	def crash(self):\n		raise KeyError(\"crashed\")\n\nThis simply creates a class that supports the with context.\nIt achieves this by having the __enter__ for when we enter the with block.\nBut also __exit__ for when we exit the with block.\n\nThe neat thing about the __exit__ function is that it mostly takes care of any exceptions for us.\nExceptions will be passed as an argument to __exit__, and they can be muted by returning True from the __exit__ function.\n\nThere is a caveat tho, and we can see it by running the following code:\nfrom time import time\n\nstart = time()\nfor i in range(100000000):\n	handle = WithContext()\n	with handle as instance:\n		instance.multiply()\n		instance.crash()\nend = time()\n\nprint(f\nContext took: {end - start} seconds\n)\nAnd compare it against a traditional exception handling using similar code just without the context management:\nfrom time import time\n\nstart = time()\nfor i in range(100000000):\n	handle = WithContext()\n	handle.multiply()\n	try:\n		handle.crash()\n	except KeyError:\n		pass\nend = time()\n\nprint(f\nNo Context took: {end - start} seconds\n)\n\nWe will see a result where the context management looses by quite a lot.\nAt least if speed is of importance. It's a factor of roughly 1,42.\n\n$ python test.py\nContext took: 53.213 seconds\nNo Context took: 37.246 seconds\n\nExceptions are pretty taxing and there's no way around it (yet), but if we ommit those.\nThe losses of context management becomes even bigger, a factor of 2,16.\n$ python test.py\nContext took: 37.033 seconds\nNo Context took: 17.109 seconds\n\nThis was ofcourse performed on code executing 100M times in succession.\nIdeally Context Managers would only be opened once since it's the opening/closing that takes more of the execution cycles.\nBut this might be worth keeping in mind when doing intensive operations.",
+			"author": {
+				"@type": "Person",
+				"name": "Anton Hvornum",
+				"url": "https://hvornum.se"
+			},
+			"contentLocation": {
+				"@type": "Place",
+				"name": "Stockholm, Sweden"
+			},
+			"accountablePerson": {
+				"@type": "Person",
+				"name": "Anton Hvornum",
+				"url": "https://hvornum.se"
+			},
+			"creator": {
+				"@type": "Person",
+				"name": "Anton Hvornum",
+				"url": "https://hvornum.se"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "Anton Hvornum",
+				"url": "https://hvornum.se",
+				"logo": {
+					"@type": "ImageObject",
+					"url": "https://hvornum.se/861439.jfif",
+					"width":"460",
+					"height":"460"
+				}
+			},
+			"mainEntityOfPage": "True",
+			"genre": ["python", "context-manager", "performance"],
+			"keywords": [
+				"python",
+				"benchmark",
+				"optimization",
+				"performance"
+			],
+			"articleSection": "python performance"
+		}]
+	</script>
+	<script type="text/javascript">
+		// https://search.google.com/test/rich-results?utm_campaign=sdtt&utm_medium=message&id=ID2LiCzp7xJop-NI983b_Q
+		// https://search.google.com/search-console?utm_medium=referral&utm_campaign=7552505&resource_id=https://python.rip/
+		function post_processing_code() {
+			document.querySelectorAll('.hljs-keyword').forEach((DOMObject) => {
+				if(DOMObject.innerHTML == 'def')
+					DOMObject.className += 'hljs-keyword hljf-function-definition';
+				if(DOMObject.innerHTML == 'class')
+					DOMObject.className += 'hljs-keyword hljf-function-definition';
+			})
+		}
+
+		function formatting(object, highlight=false) {
+			document.querySelectorAll(object).forEach((DOMObject) => {
+				let code = {'obj' : DOMObject, 'content' : DOMObject.textContent};
+				let indentation_base = -1;
+				let wiped = false;
+
+				code.content.split('\n').forEach((line) => {
+					if(!wiped) {
+						code.content = '';
+						wiped = true;
+					}
+
+					if (line.substr(0, 1) == '\t' && indentation_base == -1) {
+						// Whenever we come across the first indentation level,
+						// we set that as a base for the rest of the iterations.
+						indentation_base = (line.match(/\t/g) || []).length;
+					}
+					let re = new RegExp(`\t{${indentation_base}}`);
+					let code_wrap_replacer_start = new RegExp(/\/\*code-wrap/);
+					let code_wrap_replacer_end = new RegExp(/code-wrap\*\//);
+					let code_replacer_start = new RegExp(/\/\*code/);
+					let code_replacer_end = new RegExp(/code\*\//);
+
+					line = line.replace(/(<)(.*?)(>)/g, '&lt;$2&gt;');
+					line = line.replace(code_wrap_replacer_start, '<div class="code wrappable">');
+					line = line.replace(code_wrap_replacer_end, '</div>');
+					line = line.replace(code_replacer_start, '<div class="code">');
+					line = line.replace(code_replacer_end, '</div>');
+					line = line.replace(/`(.*?)`/g, '<inline>$1</inline>');
+					line = line.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
+					line = line.replace(/(\.\.warning\:)(.*)/g, '<div class="notification warning red-ring">$2</div>');
+					line = line.replace(/(\.\.note\:)(.*)/g, '<div class="notification blue-ring">$2</div>');
+					line = line.replace(/(\.\.note\:)(.*)/g, '<div class="notification blue-ring">$2</div>');
+
+					code.content += line.replace(re, '') + '\n';
+				})
+
+				code.obj.innerHTML = code.content.trim();
+				if(highlight)
+					hljs.highlightBlock(code.obj);
+			})
+
+			post_processing_code();
+		}
+
+		window.onload = () => {
+			formatting('.article-body');
+			formatting('.code', true);
+			//format_article();
+
+			document.querySelector('.m').href="mailto:"+".article-body".substr(1,1)+document.getElementsByTagName("BODY")[0].children[0].className.substr(2,2)+document.getElementsByTagName("BODY")[0].children[0].className.substr(1,2)+"@python.rip"
+		}
+	</script>
+</head>
+<body>
+	<div class="container"> <!-- Everyone starts out with a container.. Don't judge -->
+		<div class="left side">
+			<div class="logo">
+			</div>
+			<div class="menu">
+				<div class="page-description">
+					A very unofficial blog by a <a href="" class="m">person</a> who's been breaking Python for far to long.<br>
+					<div class="notification warning">
+						Not for production use!
+					</div>
+				</div>
+				<ul class="small-list">
+					<li class="header">Packages</li>
+					<li class="package"><a href="https://pypi.org/project/archinstall/" target="_blank">Arch Linux Installer</li>
+					<li class="package"><a href="https://pypi.org/project/slimHTTP/" target="_blank">slimHTTP</a></li>
+					<li class="package"><a href="https://pypi.org/project/slimWS/" target="_blank">slimWS</a></li>
+					<li class="package"><a href="https://pypi.org/project/slimDNS/" target="_blank">slimDNS</a></li>
+					<li class="package"><a href="https://github.com/Torxed/slimDHCP" target="_blank">slimDHCP</a></li>
+
+					<li class="header">Posts</li>
+					<li class="post"><a href="/?headline=Compiling C code from Python runtime">Compiling C code from Python runtime</a></li>
+					<li class="post"><a href="/?headline=Patching Python builtin functions">Patching Python builtin functions</a></li>
+					<li class="post"><a href="/?headline=Reloading Source Code in Runtime">Reloading Source Code in Runtime</a></li>
+					<li class="post"><a href="/?headline=Context Managers">Context Managers</a></li>
+				</ul>
+			</div>
+			Python is still young!
+			This is not the graveyard you're looking for!
+		</div>
+		<div class="right side">
+			<div class="article">
+				<div class="article-headline">Compiling C code from Python runtime</div>
+				<div class="article-description">May the source be with you!</div>
+				<div class="article-body">
+					This is a rare one that I don't see very often (outside of installers), but it's fully possible to compile your C/C++/insert-language-here from the Python runtime, and executing it using `ctypes` external library.
+					Assuming you know why you would need this, here's a short embedded "hello world" example that we will import as a shared library.
+
+					/*code
+						import tempfile
+						import ctypes
+						from distutils.ccompiler import new_compiler
+
+						tmp_dir = tempfile.gettempdir()
+						c_lib_name = 'test.so'
+						c_code=r"""
+						#include &lt;stdio.h&gt;
+
+						int main() {
+							printf("Hello world!\n");
+							return(0);
+						}
+						"""
+
+						with open(f"{tmp_dir}/test.c", 'w') as out:
+							out.write(c_code)
+
+						compiler = new_compiler()
+						link_objects = compiler.compile([f"{tmp_dir}/test.c"], output_dir=tmp_dir, include_dirs=[tmp_dir])
+						compiler.link_shared_object(link_objects, c_lib_name, library_dirs=[tmp_dir], output_dir=tmp_dir)
+
+						c_lib = ctypes.CDLL(f"{tmp_dir}/{c_lib_name}")
+						return_value = c_lib.main()
+					code*/
+
+					This rather short program will import two helper libraries, `tempfile` is to get the temporary path defined by the system in which we'll place all our temprary files and code, the `ctypes` library to execute the compiled result, as well as the `ccompiler` helpers to actually compile the embedded source code.
+
+					..note: In case it's not clear, this does require a compiler locally on the machine. In my case it will use `cc`.
+
+					The `new_compiler()` helper is not strictly necessary, but it does make life a bit easier by finding a possible compiler and works on different platforms (windows, osx etc).
+					In the background, the only thing that happens is that [subprocess.Popen](https://github.com/python/cpython/blob/63298930fb531ba2bb4f23bc3b915dbf1e17e9e1/Lib/distutils/spawn.py#L75-L76) is called with the arguments:
+					/*code
+						['cc', '-I/tmp', '-c', 'test.c', '-o', '/tmp/test.o']
+						['cc', '-shared', '/tmp/test.o', '-L/tmp', '-o', '/tmp/test.so']
+					code*/
+					
+					You can poke around in the [cpython/Lib/distutils/ccompiler.py](https://github.com/python/cpython/blob/63298930fb531ba2bb4f23bc3b915dbf1e17e9e1/Lib/distutils/ccompiler.py#L990-L1032) and see what it does.
+					And on [line #910](https://github.com/python/cpython/blob/63298930fb531ba2bb4f23bc3b915dbf1e17e9e1/Lib/distutils/ccompiler.py#L910) is where the compiler and linker code gets executed.
+
+					Once the source code in `c_code` is compiled, we can call `compiler.link_shared_object()` to create a shared object file (library). Then we can call `ctypes.CDLL(lib_path)` on the `.so` and it will behave more or less exactly as any other C-library.
+					
+					For instance, since we defined a `main()` function in our embedded source code:
+					/*code
+						int main() {
+
+						}
+					code*/
+					After we've imported the library, we can call `c_lib.main()` to access the function.
+
+					..warning: The shared C library in this example is not to equal a [Python C library](https://docs.python.org/3/extending/extending.html), since we haven't called `Py_INIT` among other things. I would recommend avoiding to call Python specifics such as `PyObject` or `PyFloat_FromDouble` as they will behave very strangely unless you know what you're doing.
+
+					cPython is pretty fast as is, but this allows you to create anything you want that isn't already included in the cPython core.
+
+					Perhaps secure string management? Custom socket layer? Accessing low level device API's etc.
+					I know that [numpy](https://github.com/numpy/numpy) for sure [uses it quite a bit](https://github.com/numpy/numpy/blob/cb557b79fa0ce467c881830f8e8e042c484ccfaa/numpy/distutils/system_info.py#L2096-L2132), with some [modifications](https://github.com/numpy/numpy/blob/cb557b79fa0ce467c881830f8e8e042c484ccfaa/numpy/distutils/ccompiler.py#L97).
+
+					Most commonly this method is probably used during setup, like [pandas](https://github.com/pandas-dev/pandas/blob/8f26d872b4181d8ee008cddf911bf8b9716ee8be/setup.py) is doing to compile different [extensions](https://github.com/pandas-dev/pandas/blob/8f26d872b4181d8ee008cddf911bf8b9716ee8be/setup.py#L760).
+
+					So a more useful example of what this could be used for, would be to enhance functionality.
+					Lets say we want to create a more accurate `round()` function. You could solve it by doing:
+					/*code
+						round((2.675 * 100)) / 100
+					code*/
+					But that's not the point of this exercise, so we'll use a C library for this:
+					/*code
+						import tempfile
+						import ctypes
+						import pathlib
+						from distutils.ccompiler import new_compiler
+
+						tmp_dir = tempfile.gettempdir()
+						c_lib_name = 'test.so'
+						c_code=r"""
+						#include &lt;math.h&gt;
+
+						float round_(float num, int decimals) {
+							return roundf(num * pow(10, decimals)) / pow(10, decimals);
+						}
+						"""
+						
+						with open("{tmp_dir}/test.c", 'w') as out:
+							out.write(c_code)
+
+						compiler = new_compiler()
+
+						link_objects = compiler.compile([f"{tmp_dir}/test.c"],
+														extra_preargs=['-fPIC'],
+														output_dir=tmp_dir,
+														include_dirs=[tmp_dir])
+						compiler.link_shared_object(link_objects,
+													c_lib_name,
+													library_dirs=[tmp_dir],
+													extra_preargs=['-fPIC'],
+													output_dir=tmp_dir)
+
+						c_lib = ctypes.CDLL(f"{tmp_dir}/{c_lib_name}")
+						c_lib.round_.restype = ctypes.c_float
+
+						value = c_lib.round_(ctypes.c_float(2.675), ctypes.c_int(2))
+						print(value)
+					code*/
+
+					This lets the C code handle the number and round it to the closest matching number.
+					The conversion back from a `c_float` will leave a bit of a trailing residue.
+					So we could clean it up a bit, make it more generic for future calls and have it clean up any build files after itself even if the build crashes:
+
+					/*code
+						import os
+						import ctypes
+						import pathlib
+						from distutils.ccompiler import new_compiler
+
+						class CompilationError(BaseException):
+							pass
+
+						class ExternalLibrary():
+							def __init__(self, source, libname, working_directory="/tmp"):
+								self.source = source
+								self.libname = libname
+								self.working_directory = working_directory
+								self.link_objects = []
+								self.is_clean = False
+								self.compiled = False
+
+							def compile(self):
+								compiler = new_compiler()
+
+								original_directory = os.getcwd()
+								os.chdir(self.working_directory)
+
+								with open(f'{self.libname}.c', 'w') as out:
+									out.write(self.source)
+
+
+								self.link_objects = compiler.compile([f'{self.libname}.c'],
+																	extra_preargs=['-fPIC'],
+																	output_dir=self.working_directory,
+																	include_dirs=[self.working_directory])
+								compiler.link_shared_object(self.link_objects,
+															self.libname,
+															library_dirs=[self.working_directory],
+															extra_preargs=['-fPIC'],
+															output_dir=self.working_directory)
+
+								lib_path = pathlib.Path().absolute() / self.libname
+								lib = ctypes.CDLL(lib_path)
+
+								os.chdir(original_directory)
+								self.clean()
+
+								return lib
+
+							def clean(self):
+								if not self.is_clean:
+									# Clean up any build files, linker files etc.
+									if os.path.isfile(f"{self.working_directory}/{self.libname}.c"):
+										os.remove(f"{self.working_directory}/{self.libname}.c")
+
+									for obj in self.link_objects:
+										if os.path.isfile(obj):
+											os.remove(obj)
+
+									if os.path.isfile(f"{self.working_directory}/{self.libname}"):
+										os.remove(f"{self.working_directory}/{self.libname}")
+
+									self.is_clean = True
+
+							def __enter__(self):
+								try:
+									lib = self.compile()
+									self.compiled = True
+									return lib
+								except:
+									self.compiled = False
+									return self
+
+							def __exit__(self, *args, **kwargs):
+								self.clean()
+
+								if self.compiled is False:
+									raise CompilationError(f"Could not compile external library {self.libname}")
+
+								return True
+
+
+						def round_(num, decimal_places=0):
+							c_code=r"""
+								#include &lt;math.h&gt;
+
+								float round_(float num, int decimals) {
+									return roundf(num * pow(10, decimals)) / pow(10, decimals);
+								}
+							"""
+							with ExternalLibrary(c_code, "round.so") as c_lib:
+								c_lib.round_.restype = ctypes.c_float
+								return round(c_lib.round_(ctypes.c_float(num), ctypes.c_int(decimal_places)), decimal_places)
+
+						print(round_(2.675, 2))
+					code*/
+					/*code
+						2.68
+					code*/
+					It might look like a lot, but it's essentially just a `with context` class that cleans up any build files if it crashes.
+					We also created a `round_` function that wraps the built-in `round` but with better accuracy.
+
+					Big thanks to Square789 over at [https://pythondiscord.com/](https://pythondiscord.com/) for bouncing ideas and pointing me in the right direction when it came to the C API and ctypes. And remember if do want to use `PyObject` and other Python C API calls, don't forget to include `/usr/include/python{sys.version_info.major}.{sys.version_info.minor}/` in the `include_dirs` list. As it's not automatically detected. Or your platform equivalent.
+						
+
+					Useful references on the topic:
+					 * https://docs.python.org/3/distutils/apiref.html#distutils.ccompiler.CCompiler.compile
+					 * https://docs.python.org/3/distutils/apiref.html#distutils.ccompiler.CCompiler.link_executable
+					 * https://docs.python.org/3/library/ctypes.html#return-types
+				</div>
+			</div>
+
+			<div class="article">
+				<div class="article-headline">Patching Python builtin functions</div>
+				<div class="article-description">Ever felt you were missing built in functions in Python? Wish you had more options? Well you do now, call 555-breaking-changes today!</div>
+				<div class="article-body">
+					I honestly have no idea where you [would ever use this](https://github.com/Torxed/archinstall/blob/4d0f89e0843a50757d11a408c452a862f9ac00c7/archinstall/lib/profiles.py#L141). But in the spirit of "why not?".
+
+					Lets say you have a classic setup just like in the article [Reloading Source Code in Runtime](http://python.rip/?headline=Reloading Source Code in Runtime). And you want to share a variable across your application. Some settings perhaps.
+
+					/*code
+						import testconfig
+
+						print(f"I am your {testconfig.parent}!")
+						import submodule
+					code*/
+
+					Sub-module also imports the config:
+					/*code
+						import testconfig
+
+						print(f"I am your child, {testconfig.parent}!")
+					code*/
+
+					The config is just a one thing variable:
+					/*code
+						parent = 'father'
+					code*/
+
+					Which produces a shocking output of:
+					/*code
+						$ python test.py
+						"I am your father!"
+						"I am your child, father!"
+					code*/
+
+					Performance and risk assessment aside, there is another way you could share variables throughout your application.
+					This is normally reserved(?) for the core of Python, but we can benefit from the fact that the core of python are as all other things, just objects.
+
+					Instead of having a `testconfig.py` file, that everything imports, you could do (in your main application):
+					/*code
+						__builtins__.__dict__["parent"] = "father"
+
+						print(f"I am your {parent}!")
+						import submodule
+					code*/
+
+					And in your `submodule.py` change to the following:
+					/*code
+						print(f"I am your child, {parent}!")
+					code*/
+
+					Isn't that kinda neat? A truly global/builtin variable called `father`. No need to import a file to access it.
+					Which means you can actually change (sorta) the inner workings of Python, from Python, while running your source code. There's so many things to break, so many things to try!
+
+					As a very silly example (the theme of this whole blog), we'll take the Python's builtin `round()` function, which quotes:
+
+					..note: The behavior of `round()` for floats can be surprising: for example, `round(2.675, 2)` gives `2.67` instead of the expected `2.68`. This is not a bug: it’s a result of the fact that most decimal fractions can’t be represented exactly as a float. See [Floating Point Arithmetic: Issues and Limitations](https://docs.python.org/3/tutorial/floatingpoint.html#tut-fp-issues) for more information.
+
+					What if we don't like this? We can use `numpy.round_` instead. But we're obviously to lazy to correct the rest of our hypothetical application to adopt this change. So we'll patch the built-ins! Because in Python, there's no rules! Except other peoples opinions and what the core devs decide your fate should be like..
+
+					So we can patch the builtin `round()` by replacing it as follows:
+					/*code
+						import numpy
+
+						def new_round(number, ndigits=0):
+							return numpy.round_(number, ndigits)
+
+						print('Old round:', round(2.675, 2))
+						__builtins__.__dict__['round'] = new_round
+						print('New round:', round(2.675, 2))
+					code*/
+
+					The result will be the following:
+					/*code
+						$ python test.py
+						Old round: 2.67
+						New round: 2.68
+					code*/
+
+					Same call, just different call stacks. That to me, is amazing sorcery that should be a time honored tradition! Python allows you to shoot yourself in the foot and you're an adult, so you can take it!
+
+					Even the slightest mistakes tho, like placing the import of numpy after you've modified `round()` will cause things to break.
+					/*code
+						def new_round(number, ndigits=0):
+							import numpy
+							return numpy.round_(number, ndigits)
+
+						__builtins__.__dict__['round'] = new_round
+						print(round(2.675, 2))
+					code*/
+
+					Not much changed, just the order of imports. But for some reason numpy doesn't like if `round()` was changed before the import of `numpy`. And you'll end up with something similar to:
+					/*code-wrap
+						Traceback (most recent call last):
+						  File "C:\Users\anton\AppData\Local\Programs\Python\Python39\lib\site-packages\numpy\core\__init__.py", line 22, in <module>
+						    from . import multiarray
+						  File "C:\Users\anton\AppData\Local\Programs\Python\Python39\lib\site-packages\numpy\core\multiarray.py", line 12, in <module>
+						    from . import overrides
+						  File "C:\Users\anton\AppData\Local\Programs\Python\Python39\lib\site-packages\numpy\core\overrides.py", line 7, in <module>
+						    from numpy.core._multiarray_umath import (
+						ImportError: PyCapsule_Import could not import module "datetime"
+
+						During handling of the above exception, another exception occurred:
+
+						Traceback (most recent call last):
+						  File "C:\Users\anton\test.py", line 6, in <module>
+						    print(round(2.675, 2))
+						  File "C:\Users\anton\test.py", line 2, in new_round
+						    import numpy
+						  File "C:\Users\anton\AppData\Local\Programs\Python\Python39\lib\site-packages\numpy\__init__.py", line 145, in <module>
+						    from . import core
+						  File "C:\Users\anton\AppData\Local\Programs\Python\Python39\lib\site-packages\numpy\core\__init__.py", line 48, in <module>
+						    raise ImportError(msg)
+						ImportError:
+
+						IMPORTANT: PLEASE READ THIS FOR ADVICE ON HOW TO SOLVE THIS ISSUE!
+
+						Importing the numpy C-extensions failed. This error can happen for
+						many reasons, often due to issues with your setup or how NumPy was
+						installed.
+
+						We have compiled some common reasons and troubleshooting tips at:
+
+						    https://numpy.org/devdocs/user/troubleshooting-importerror.html
+
+						Please note and check the following:
+
+						  * The Python version is: Python3.9 from "C:\Users\anton\AppData\Local\Programs\Python\Python39\python.exe"
+						  * The NumPy version is: "1.20.1"
+
+						and make sure that they are the versions you expect.
+						Please carefully study the documentation linked above for further help.
+
+						Original error was: PyCapsule_Import could not import module "datetime"
+					code-wrap*/
+
+					And this, is not something you report upstream.
+					But it thought you a lesson didn't it? To shoot first, ask questions later!
+				</div>
+			</div>
+			<div class="article">
+				<div class="article-headline">Reloading Source Code in Runtime</div>
+				<div class="article-description">If you want the flame of a thousand gods coming your way but the speed of a rocket when reloading source code, why not do it manually?</div>
+				<div class="article-body">
+					Lets start off by setting the scene. It was a cold Swedish winter night, and you need to reload a sub-module in runtime..
+					You've got a pretty much standard project with a main file, a sub-module and a configuration file.
+
+					The main file simply prints a value, randomizes it and prints it again. And the code might look something like this:
+
+					/*code
+						import testconfig
+						import submodule
+
+						if 'key' in testconfig.some_variable:
+							print('Startvalue:', testconfig.some_variable['key'])
+							submodule.randomize()
+							print('Endvalue:', testconfig.some_variable['key'])
+
+						end = time.time()
+					code*/
+
+					The submodule is not much more advanced:
+					/*code
+						import random
+						import testconfig
+
+						def randomize():
+							if 'key' in testconfig.some_variable:
+								testconfig.some_variable['key'] = random.randint(0, 10)
+					code*/
+
+					Finally, our example configuration as follows:
+					/*code
+						some_variable = {
+							'key' : 0
+						}
+					code*/
+
+					Which produces a shocking output of:
+					/*code
+						$ python test.py
+						Startvalue: 0
+						Endvalue: 5
+					code*/
+
+					This is arguably the most common and useful way to share data between modules in a synced manner.
+					But what if you want to load this dynamically, in say a [web server](https://github.com/Torxed/slimHTTP/blob/572c2cf5493cb0449b0122394ed49c411894c563/slimHTTP.py#L619-L623), where the sub-module (and subsequently) the config is re-imported several times per second?
+
+					We can of course use `importlib.reload()` to achieve this, by modifying the code slightly.
+					We'll emulate 10K imports/reloads and to time it we'll throw a simpler timer into the mix so we can see the execution time.
+					/*code
+						import time
+						import importlib
+
+						start = time.time()
+						import testconfig
+
+						if 'key' in testconfig.some_variable:
+							print('Startvalue:', testconfig.some_variable['key'])
+							for i in range(10000):
+								import submodule
+								importlib.reload(submodule)
+								submodule.randomize()
+							print('Endvalue:', testconfig.some_variable['key'])
+
+						end = time.time()
+						print(f"Total time: {end-start}")
+					code*/
+
+					Which on the test machine in this case will land on `2.319` seconds for a full run.
+					If this was a web server, that would means we can support roughly 4300 users per second not counting the rest of the webserver code.
+
+					This is still a bit to slow if we want to compete against the likes of lighttpd or nginx.
+					(disclaimer: don't write your own web server, use one of the two above or whatever is hip when you're reading this)
+
+					So how can we improve source code loading from here?
+					Well, we could skip the fancy helpers and go straight to the mother dough, the `importlib.util` magic.
+					Note that going "low", means there's a high probability that this will break in any minor or major version upgrade.
+					The developers tend to not support the little guy that does ground breaking development (ironic), so use the wrappers in production!
+
+					Anyway, optimizing the code:
+					/*code
+						import sys
+						import time
+						import importlib.util
+
+						start = time.time()
+						import testconfig
+
+						if 'key' in testconfig.some_variable:
+							print('Startvalue:', testconfig.some_variable['key'])
+							for i in range(10000):
+								spec = importlib.util.spec_from_file_location("submodule","./submodule.py")
+								submodule = sys.modules["submodule"] = importlib.util.module_from_spec(spec)
+								spec.loader.exec_module(submodule)
+								submodule.randomize()
+							print('Endvalue:', testconfig.some_variable['key'])
+
+						end = time.time()
+						print(f"Total time: {end-start}")
+					code*/
+
+					Here, we tap in to `importlib.util.spec_from_file()` to load the source code straight, no automagic protecting us.
+					And if we run this snippet, we'll average around `1.734` seconds per import/reload.
+					Not bad, that's 5700 users per second give or take depending on a few 56k modem users draging out our CPU cycles if we're not threaded.
+
+					Would you ever need this? Probably not. Would it work for previous to 3.9? Maybe, probably not.
+					Stick to `importlib.reload()` if you don't want things to break unexpectedly.
+
+					But I'll end on another fun note.
+					Since you have control over the namespace in which you import the module, you can change the bavior of:
+					/*code
+						if __name__ == "submodule":
+							...
+					code*/
+
+					Since this is dependant on the namespace of the module during import, modifying `importlib.util.spec_from_file_location("submodule", "./submodule.py")` to something like `importlib.util.spec_from_file_location("submodule.py", "./submodule.py")` means you can import the module and avoid the [`if __name__`](https://github.com/Torxed/archinstall/blob/5ded22a5d0f5fb1cf1d4d95945f655e8b6a33896/examples/guided.py#L138) check to trigger.
+
+					You could also use this to load source code from a remote HTTP source, not that that's ever a good idea. But you could. [But you shouldn't](https://github.com/Torxed/archinstall/blob/15714ebb86650585a9bd1d0eaf30941579e3020f/archinstall/lib/profiles.py#L101-L135)!
+
+					..warning:Do not ever, ever! Import unverified source code. It's a quick way to get rekt!
+
+					It does support absolute paths, which is pretty neat.
+					It means you can locate and force imports based on paths instead of whatever the `sys.path` says.
+					Global variables and local variables however is a different story, one we'll skip for this already long story.
+				</div>
+			</div>
+
+			<div class="article">
+				<div class="article-headline">Context Managers</div>
+				<div class="article-description">Why Context Managers might be a bad idea, but also why they might be fantastic.</div>
+				<div class="article-body">
+					Given the following code:
+					/*code
+						class WithContext():
+							def __init__(self):
+								self.value = 5
+
+							def __enter__(self):
+								return self
+
+							def __exit__(self, *args, **kwargs):
+								if args and args[1] == KeyError:
+									pass
+								return True
+
+							def multiply(self):
+								return self.value * 2
+
+							def crash(self):
+								raise KeyError("crashed")
+					code*/
+
+					This simply creates a class that supports the `with` context.
+					It achieves this by having the `__enter__` for when we enter the `with` block.
+					But also `__exit__` for when we exit the `with` block.
+
+					The neat thing about the `__exit__` function is that it mostly takes care of any exceptions for us.
+					Exceptions will be passed as an argument to `__exit__`, and they can be <i>muted</i> by returning `True` from the `__exit__` function.
+
+					There is a caveat tho, and we can see it by running the following code:
+					/*code
+						from time import time
+
+						start = time()
+						for i in range(100000000):
+							handle = WithContext()
+							with handle as instance:
+								instance.multiply()
+								instance.crash()
+						end = time()
+
+						print(f"Context took: {end - start} seconds")
+					code*/
+					And compare it against a traditional exception handling using similar code just without the context management:
+					/*code
+						from time import time
+
+						start = time()
+						for i in range(100000000):
+							handle = WithContext()
+							handle.multiply()
+							try:
+								handle.crash()
+							except KeyError:
+								pass
+						end = time()
+
+						print(f"No Context took: {end - start} seconds")
+					code*/
+					
+					We will see a result where the context management looses by quite a lot.
+					At least if speed is of importance. It's a factor of roughly 1,42.
+					
+					/*code
+						$ python test.py
+						Context took: 53.213 seconds
+						No Context took: 37.246 seconds
+					code*/
+
+					Exceptions are pretty taxing and there's no way around it (yet), but if we ommit those.
+					The losses of context management becomes even bigger, a factor of 2,16.
+					/*code
+						$ python test.py
+						Context took: 37.033 seconds
+						No Context took: 17.109 seconds
+					code*/
+
+					This was of course performed on code executing 100M times in succession.
+					Ideally Context Managers would only be opened once since it's the opening/closing that takes more of the execution cycles.
+					But this might be worth keeping in mind when doing intensive operations.
+				</div>
+			</div>
+
+			<div class="foot">
+				<div class="snake"></div>&nbsp;<p>Powered by The Snake!</p>&nbsp;|&nbsp;<p>Licenced under:&nbsp;<div class="creative-commons"></div>&nbsp;<a href="https://creativecommons.org/licenses/by/4.0/">BY 4.0</a></p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

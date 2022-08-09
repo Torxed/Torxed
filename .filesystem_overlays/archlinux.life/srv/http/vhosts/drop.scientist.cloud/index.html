@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Goldman&display=swap" rel="stylesheet">
+	<link rel=icon href="/resources/images/drop-icon.png" sizes="32x32" type="image/png">
+	<style type="text/css">
+		:root {
+			--primary: #546e7a;
+			--dark: #29434e;
+			--light: #819ca9;
+			--p_text: #FFFFFF;
+			--borders: #8899a1;
+			--background: #222d32;
+			--background-lighter: #424d52;
+			--background-dark: #1e282c;
+			--background-darker: #1a2226;
+			--background-dark-color: #4b646f;
+			--blue: #3c8dbc;
+			--blue-dark: #367fa9;
+			--background-light: #ecf0f5;
+			--card-border: #d2d6de;
+			--card-background: #FFFFFF;
+			--white: #FFFFFF;
+			--cream: #b8c7ce;
+
+			--backdrop_dark: #E1E2E1;
+			--backdrop_light: #F5F5F6;
+
+			--o_primary: #ff7043;
+			--o_light: #ffa270;
+			--o_dark: #c63f17;
+
+			--g_primary: #9ccc65;
+			--g_light: #cfff95;
+			--g_dark: #6b9b37;
+		}
+
+		body, html {
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			height: 100%;
+			margin: 0px;
+			padding: 0px;
+
+			display: flex;
+		}
+
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
+		.body {
+			display: flex;
+			flex-direction: row;
+			flex-grow: 1;
+		}
+
+		.left-side {
+			display: flex;
+			flex-direction: column;
+
+			background-color: var(--background-dark);
+			font-family: 'Goldman', cursive;
+		}
+
+		.right-side {
+			display: flex;
+			flex-direction: column;
+			flex-grow: 1;
+
+			background-color: var(--background-light);
+		}
+
+		.self-id {
+			display: flex;
+			color: #FFFFFF;
+			justify-content: center;
+			background-color: var(--blue-dark);
+			font-size: 3em;
+		}
+
+		.current-sessions {
+			display: flex;
+			flex-direction: column;
+			flex-grow: 1;
+		}
+
+		.session-entry {
+			display: flex;
+			flex-direction: row;
+		}
+
+		.session-entry:nth-child(even) { background-color: var(--background-darker) }
+		.session-entry:nth-child(odd) { background-color: var(--background-lighter) }
+
+		.session-entry-label {
+			color: #FFFFFF;
+			padding: 5px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.session-entry-buttons {
+			display: flex;
+			flex-direction: row;
+			flex-grow: 1;
+			justify-content: flex-end;
+		}
+
+		.input-field {
+			padding: 5px;
+			color: var(--blue);
+		}
+
+		.button {
+			border-radius: 3px;
+			border: 1px solid #000000;
+			background-color: var(--g_primary);
+			padding: 5px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			cursor: pointer;
+		}
+
+		.button.accept {
+			flex-grow: 1;
+		}
+
+		.button.deny {
+			border-radius: 20px;
+			border: 1px solid #000000;
+			background-color: #FF0000;
+			height: 20px;
+			width: 20px;
+			display: flex;
+		}
+
+		.button.upload {
+			background-color: var(--blue);
+			flex-grow: 1;
+		}
+
+		.uploads {
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.item {
+			display: flex;
+			align-items: center;
+			cursor: pointer;
+			padding: 10px;
+			position: relative;
+		}
+
+		.item > img {
+			max-height: 10em;
+		}
+
+		.item > a {
+			height: 3em;
+			display: flex;
+			align-items: center;
+			cursor: pointer;
+
+			text-decoration: none;
+			color: var(--background-darker);
+		}
+
+		.icon {
+			height: 3em;
+			width: 3em;
+			background-repeat: no-repeat;
+			background-size: contain;
+			background-position: center;
+
+			/* https://www.iconarchive.com/show/leaf-mimes-icons-by-untergunter/text-plain-icon.html */
+			background-image: url('/resources/images/icons/generic-image.png');
+		}
+
+		.icon.text-plain {
+			background-image: url('/resources/images/icons/text-plain.png');
+		}
+
+		.icon.application-pdf {
+			background-image: url('/resources/images/icons/application-pdf.png');
+		}
+
+		.progressbar {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			left: 0px;
+			top: 0px;
+			overflow: hidden;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-family: 'Goldman', cursive;
+			min-width: 15% !important;
+			background-color: rgba(185, 185, 185, 0.8);
+		}
+
+		.progressbar.done {
+			width: 0%;
+			visibility: hidden;
+		}
+
+		.progressbar.decrypting {
+			background-color: rgba(185, 25, 25, 0.8);
+		}
+
+		.progressbar.downloading {
+			background-color: rgba(25, 185, 25, 0.8);
+		}
+	</style>
+	<script src="/resources/javascript/slimWebSocket/slimWebSocket.js" type="text/javascript"></script>
+	<script src="/resources/javascript/slimCrypt/slimCrypt.js"></script>
+	<script type="text/javascript">
+	let socket = null; // Create a global socket element, initate it with `new slimWebSocket();` later
+	let session = null;
+	let blocked_access_tokens = {};
+
+	Object.size = function(obj) {
+		var size = 0, key;
+		for (key in obj) {
+			if (obj.hasOwnProperty(key)) size++;
+		}
+		return size;
+	};
+
+	class Base64 {
+		static encode(bytes) {
+			return btoa(bytes);
+		}
+		static decode(string) {
+			return atob(string);
+		}
+	}
+	
+	// Loading JavaScript from a cross-site resource is blocked.
+	// But there's nothing stopping us from downloading the script
+	// as a text-blob and placing it within the <script> </ script> tags,
+	// which causes the browser to parse it, but not as a forrain object.
+	//
+	// #LoadingScriptsFromGithub
+
+	class DropSession {
+		constructor(socket, session_id) {
+			this.session_id = session_id;
+			this.blocked_sessions = {};
+			this.aliases = {};
+			this.uploads = {};
+			this.upload_timer = null;
+			this.current_upload = null;
+			this.keys = {};
+			this.partner_keys = {};
+
+			this.downloads = {};
+			socket.parse_frame = (data) => {
+				this.parse_session_data(data)
+			}
+		}
+
+		connect(parner_id) {
+			socket.send({
+				'action' : 'connect',
+				'session_id' : parner_id,
+				'from_session' : this.session_id
+			})
+		}
+
+		set_key(key_type, key_data) {
+			this.keys[key_type] = key_data;
+		}
+
+		block_session(access_token) {
+			this.blocked_sessions[access_token] = true;
+		}
+
+		is_blocked(access_token) {
+			return typeof this.blocked_sessions?.[access_token] !== 'undefined'
+		}
+
+		generate_id(min=0, max=1000) {
+			return Math.floor(Math.random() * max) + min;
+		}
+
+		chunk(string, chunk_size=16383) {
+			let chunks = {};
+			string.match(new RegExp(`.{1,${chunk_size}}`, 'g')).forEach((chunk, chunk_index) => {
+				chunks[chunk_index] = {
+					'data' : chunk,
+					'status' : 'pending'
+				}
+			})
+			return chunks
+		}
+
+		upload() {
+			let all_uploads_gone = true;
+			Object.keys(this.uploads).forEach((upload_id) => {
+				if(!this.current_upload)
+					this.current_upload = upload_id;
+
+				let partner_id = this.uploads[this.current_upload]['session_id'];
+				if (upload_id == this.current_upload) {
+					if (this.uploads[this.current_upload]['status'] == 'pending') {
+						all_uploads_gone = false;
+
+						this.uploads[this.current_upload]['one_time_key'] = null
+						this.uploads[this.current_upload]['status'] = 'key_generation';
+						let base_data = btoa(this.uploads[this.current_upload]['file_data']);
+						this.uploads[this.current_upload]['file_chunks_data'] = this.chunk(base_data);
+						delete this.uploads[this.current_upload]['file_data'];
+						this.uploads[this.current_upload]['file_data'] = null;
+						this.uploads[this.current_upload]['file_chunks'] = 0
+
+						generate_one_time_key((one_time_key) => {
+							this.uploads[this.current_upload]['one_time_key'] = one_time_key;
+							this.uploads[this.current_upload]['status'] = 'key_generated';
+						})
+					} else if (this.uploads[this.current_upload]['status'] == 'key_generated') {
+						all_uploads_gone = false;
+						/*
+						Encrypt the data into chunks
+						*/
+
+						let all_chunks_done = true;
+						Object.keys(this.uploads[this.current_upload]['file_chunks_data']).every((chunk_id) => {
+							console.log(chunk_id, this.uploads[this.current_upload]['file_chunks_data'][chunk_id]);
+							if (this.uploads[this.current_upload]['file_chunks_data'][chunk_id]['status'] == 'encrypted') {
+								// Skip encrypted chunks
+							} else if (this.uploads[this.current_upload]['file_chunks_data'][chunk_id]['status'] == 'encrypting') {
+								all_chunks_done = false;
+								return;
+							} else if (this.uploads[this.current_upload]['file_chunks_data'][chunk_id]['status'] == 'pending') {
+								all_chunks_done = false;
+								encrypt_with_key(this.uploads[this.current_upload]['file_chunks_data'][chunk_id]['data'], this.uploads[this.current_upload]['one_time_key'], (encrypt_struct) => {
+									delete this.uploads[this.current_upload]['file_chunks_data'][chunk_id];
+									socket.send({
+										'action' : 'chunk-transfer',
+										'transfer_id' : upload_id,
+										'session_id' : this.uploads[this.current_upload]['session_id'],
+										'from_session' : this.uploads[this.current_upload]['from_session'],
+
+										'chunk' : chunk_id,
+										'encrypted_data' : encrypt_struct['b64_encrypted_payload'],
+										'chunk_iv' : btoa(encrypt_struct['iv'])
+									})
+									this.uploads[this.current_upload]['file_chunks'] += 1
+								})
+
+								this.uploads[this.current_upload]['file_chunks_data'][chunk_id]['status'] = 'encrypting'
+								return;
+							}
+						})
+
+						if (all_chunks_done) {
+							this.uploads[this.current_upload]['file_meta']['chunks'] = this.uploads[this.current_upload]['file_chunks']
+							let file_meta = JSON.stringify(this.uploads[this.current_upload]['file_meta']);
+
+							encrypt_with_key(file_meta, this.uploads[this.current_upload]['one_time_key'], (encrypt_struct) => {
+								wrap_key_in_pubkey(encrypt_struct, this.uploads[this.current_upload]['one_time_key'], this.partner_keys[partner_id], (wrapped_key) => {
+									let file_prep_struct = {
+										'action' : 'upload',
+										'transfer_id' : upload_id,
+										'session_id' : partner_id,
+										'from_session' : this.uploads[this.current_upload]['from_session'],
+										'file_meta' : encrypt_struct['b64_encrypted_payload'],
+
+										'key' : wrapped_key,
+										'iv' : btoa(encrypt_struct['iv']),
+										'key_format' : encrypt_struct['key_format']
+									}
+									socket.send(file_prep_struct)
+									this.uploads[this.current_upload]['status'] = 'sent';
+								})
+							});
+						}
+					} else {
+						all_uploads_gone = false;
+					}
+					return;
+				}
+			})
+			// TODO: Fix this logic, all uploads are NOT gone yet.
+			if(all_uploads_gone) {
+				clearInterval(this.upload_timer);
+				this.upload_timer = null;
+			}
+		}
+
+		queue_upload(to_session, file_name, file_size, file_type, file_data) {
+			let generated_id = null;
+			do {
+				generated_id = this.generate_id(0, 1000);
+			} while (!generated_id && typeof this.uploads[generated_id] !== 'undefined');
+
+			this.uploads[generated_id] = {
+				'status' : 'pending',
+				'session_id' : to_session,
+				'from_session' : this.session_id,
+				'file_meta' : {
+					'name' : file_name,
+					'size' : file_size,
+					'type' : file_type,
+					'chunks' : null,
+				},
+				'file_data' : file_data
+			}
+
+			if(!this.upload_timer) {
+				this.upload_timer = setInterval(() => {this.upload.call(this)}, 10);
+			}
+		}
+
+		reconstruct_chunks(sender, transfer_id, chunk_funk) {
+			let chunks = this.downloads[sender][transfer_id]['file_meta']['chunks'];
+			let data = '';
+			for(let i=0; i < chunks; i++) {
+				data += this.downloads[sender][transfer_id]['decrypted_data'][i]
+			}
+			chunk_funk(data);
+		}
+
+		create_upload_item(sender, transfer_id) {
+			let transfer_dom_id = btoa(`item_${sender}_${transfer_id}`).replaceAll('=', '');
+
+			if(document.querySelector('#'+transfer_dom_id))
+				return;
+
+			let DOMObject = document.querySelector('.uploads');
+			if(!DOMObject) {
+				DOMObject = document.createElement('div');
+				DOMObject.classList = 'uploads';
+			}
+
+			let file_name = this.downloads[sender][transfer_id]['file_meta']['name'];
+			let file_type = this.downloads[sender][transfer_id]['file_meta']['type'];
+
+			let DOMDataObject = null;
+
+			let progress_id = btoa(`progress_${sender}_${transfer_id}`).replaceAll('=', '');
+			let progressbar = document.createElement('div');
+			progressbar.classList = 'progressbar';
+			progressbar.id = progress_id;
+			progressbar.innerHTML = 'Decrypting: 0%';
+
+			if (file_type.substring(0,6) == 'image/') {
+				let image_container = document.createElement('div');
+				image_container.classList = 'item';
+				image_container.id = transfer_dom_id;
+
+				DOMDataObject = document.createElement('img');
+				DOMDataObject.src = 'data:'+file_type+';base64, ';
+				DOMDataObject.alt = file_name;
+
+				image_container.appendChild(DOMDataObject);
+				image_container.appendChild(progressbar);
+
+				DOMObject.appendChild(image_container);
+			} else {
+				let upload_item = document.createElement('div');
+				upload_item.classList = 'item';
+				upload_item.id = transfer_dom_id;
+
+				DOMDataObject = document.createElement('a');
+				DOMDataObject.download = file_name;
+				DOMDataObject.href = 'data:'+file_type+';base64, ';
+
+				let upload_item_icon = document.createElement('div');
+				// TODO: Check file extension, and see if we have known extensions like .py
+				upload_item_icon.classList = 'icon ' + file_type.replace('/', '-');
+				let upload_item_label = document.createElement('div');
+				upload_item_label.classList = 'filename';
+				upload_item_label.innerHTML = file_name;
+
+				DOMDataObject.appendChild(upload_item_icon);
+				DOMDataObject.appendChild(upload_item_label);
+
+				upload_item.appendChild(DOMDataObject);
+				upload_item.appendChild(progressbar);
+
+				DOMObject.appendChild(upload_item);
+			}
+			document.querySelector('.right-side').appendChild(DOMObject)
+		}
+		
+		show_upload(sender, transfer_id) {
+			let file_type = this.downloads[sender][transfer_id]['file_meta']['type'];
+
+			let transfer_dom_id = btoa(`item_${sender}_${transfer_id}`).replaceAll('=', '');
+			let progress_id = btoa(`progress_${sender}_${transfer_id}`).replaceAll('=', '');
+			let transfer_DOMObject = document.querySelector('#'+transfer_dom_id);
+			let max_chunk_id = this.downloads[sender][transfer_id]['file_meta']['chunks'];
+			let progressbar = document.querySelector('#'+progress_id);
+			progressbar.classList = 'progressbar decrypting';
+
+			if(!transfer_DOMObject) {
+				console.warning("Could not locate DOM object for transfer:", sender, transfer_id)
+				return
+			}
+
+			this.reconstruct_chunks(sender, transfer_id, (file_data) => {
+				progressbar.classList = 'progressbar done';
+				progressbar.style.width = '0%';
+
+				if (file_type.substring(0,6) == 'image/') {
+					let DOMDataObject = transfer_DOMObject.querySelector('img');
+					DOMDataObject.src = DOMDataObject.src + file_data
+				} else {
+					let DOMDataObject = transfer_DOMObject.querySelector('a');
+					DOMDataObject.href = DOMDataObject.href + file_data
+				}
+			});	
+		}
+
+		decrypt(sender, transfer_id, options, one_time_key, post_func) {
+			this.downloads[sender][transfer_id]['decrypted_data'] = {};
+			Object.keys(this.downloads[sender][transfer_id]['chunks_data']).forEach((chunk_id) => {
+				if (this.downloads[sender][transfer_id]['chunks_data'][chunk_id]['status'] == 'decrypting') {
+					return;
+				} else if(this.downloads[sender][transfer_id]['chunks_data'][chunk_id]['status'] == 'pending') {
+					let encrypted_message = new Uint8Array(JSON.parse("["+atob(this.downloads[sender][transfer_id]['chunks_data'][chunk_id]['data'])+"]"));
+					options['iv'] = new Uint8Array(JSON.parse("["+atob(this.downloads[sender][transfer_id]['chunks_data'][chunk_id]['chunk_iv'])+"]"))
+
+					this.downloads[sender][transfer_id]['chunks_data'][chunk_id]['status'] = 'decrypting'
+
+					decrypt_with_key(options, one_time_key, encrypted_message, (decrypted_file_data) => {
+						console.log('Decrypted chunk:', chunk_id)
+						this.downloads[sender][transfer_id]['decrypted_data'][chunk_id] = decrypted_file_data
+						this.downloads[sender][transfer_id]['chunks_data'][chunk_id]['status'] = 'decrypted'
+
+						if (chunk_id >= this.downloads[sender][transfer_id]['file_meta']['chunks']-1) {
+							let missing_chunks = []
+							let complete = true;
+							Object.keys(this.downloads[sender][transfer_id]['chunks_data']).forEach((chunk_id) => {
+								if(!this.downloads[sender][transfer_id]['chunks_data'][chunk_id]) {
+									complete = false;
+									missing_chunks.push(chunk_id);
+								}
+							})
+
+							socket.send({
+								'action' : 'upload-recieved',
+								'transfer_id' : transfer_id,
+								'session_id' : sender,
+								'from_session' : this.session_id,
+								'missing_chunks' : missing_chunks
+							})
+
+							if(complete) {
+								this.show_upload(sender, transfer_id);
+							}
+						}
+					})
+				}
+			})
+		}
+
+		parse_session_data(data) {
+			if(data?.['session_token'] === 'undefined' || this.is_blocked(data['session_token']))
+				return;
+
+			if (data?.['action'] == 'connect' && typeof data?.['from_session'] !== 'undefined') {
+				let active_sessions = document.querySelector('.current-sessions');
+
+				let session_entry = document.createElement('div');
+				let entry_label = document.createElement('div');
+				let entry_buttons = document.createElement('div');
+				session_entry.classList = 'session-entry';
+				entry_label.classList = 'session-entry-label';
+				entry_buttons.classList = 'session-entry-buttons';
+
+				/* Label */
+				session_entry.id = btoa(data['from_session']).replaceAll('=', '')
+				entry_label.innerHTML = data['from_session'];
+				
+				/* Buttons */
+				let accept_button = document.createElement('div');
+				accept_button.classList = 'button accept'
+				accept_button.innerHTML = 'Accept';
+
+				let deny_button = document.createElement('div');
+				deny_button.classList = 'button deny'
+				deny_button.innerHTML = 'X'
+
+				entry_buttons.appendChild(accept_button);
+				entry_buttons.appendChild(deny_button);
+
+				session_entry.appendChild(entry_label)
+				session_entry.appendChild(entry_buttons)
+				active_sessions.appendChild(session_entry)
+
+				accept_button.addEventListener('click', () => {
+					entry_buttons.innerHTML = '';
+					let upload_file_button = document.createElement('div');
+					upload_file_button.classList = 'button upload';
+					upload_file_button.innerHTML = 'Upload file'
+
+					entry_buttons.appendChild(upload_file_button);
+
+					upload_file_button.addEventListener('click', () => {
+						let fileDOM = document.createElement('input');
+						fileDOM.type = 'file';
+						fileDOM.id = 'fileInput';
+
+						fileDOM.addEventListener('change', (event) => {
+							if (fileDOM.files && fileDOM.files[0]) {
+								for(let i = 0; i < fileDOM.files.length; i++) {
+									let file = fileDOM.files[i];
+									let reader = new FileReader();
+									reader.addEventListener('load', (event) => {
+										if(event.loaded >= event.total) {
+											this.queue_upload(data['from_session'], file.name, file.size, file.type, event.target.result);
+										}
+									});
+									reader.readAsBinaryString(file);
+								}
+							}
+						})
+
+						fileDOM.click();
+					})
+
+					socket.send({
+						'action' : 'accepted',
+						'from_session' : this.session_id,
+						'session_id' : data['from_session'],
+						'publicKey' : this.keys['publicKey']
+					})
+				})
+				deny_button.addEventListener('click', () => {
+					this.block_session(data['session_token']);
+					session_entry.remove();
+				})
+			} else if (data?.['action'] == 'pubkey-publication') {
+				let sender = data['from_session'];
+				this.partner_keys[sender] = data['publicKey'];
+
+			} else if (data?.['action'] == 'accepted') {
+				let sender = data['from_session'];
+				let base64_sender = btoa(sender).replaceAll('=', '');
+				this.partner_keys[sender] = data['publicKey'];
+
+				socket.send({
+					'action' : 'pubkey-publication',
+					'from_session' : this.session_id,
+					'session_id' : sender,
+					'publicKey' : this.keys['publicKey']
+				})
+
+				let active_sessions = document.querySelector('.current-sessions');
+				let session_entry = document.querySelector('#'+base64_sender);
+				if(!session_entry) {
+					session_entry = document.createElement('div');
+					let entry_label = document.createElement('div');
+					let entry_buttons = document.createElement('div');
+					session_entry.classList = 'session-entry';
+					entry_label.classList = 'session-entry-label';
+					entry_buttons.classList = 'session-entry-buttons';
+
+					session_entry.id = base64_sender
+					entry_label.innerHTML = sender;
+
+					let upload_file_button = document.createElement('div');
+					upload_file_button.classList = 'button upload';
+					upload_file_button.innerHTML = 'Upload file'
+
+					entry_buttons.appendChild(upload_file_button);
+
+					upload_file_button.addEventListener('click', () => {
+						let fileDOM = document.createElement('input');
+						fileDOM.type = 'file';
+						fileDOM.id = 'fileInput';
+
+						fileDOM.addEventListener('change', (event) => {
+							if (fileDOM.files && fileDOM.files[0]) {
+								for(let i = 0; i < fileDOM.files.length; i++) {
+									let file = fileDOM.files[i];
+									let reader = new FileReader();
+									reader.addEventListener('load', (event) => {
+										if(event.loaded >= event.total) {
+											this.queue_upload(sender, file.name, file.size, file.type, event.target.result);
+										}
+									});
+									reader.readAsBinaryString(file);
+								}
+							}
+						})
+
+						fileDOM.click();
+					})
+					session_entry.appendChild(entry_label)
+					session_entry.appendChild(entry_buttons)
+					active_sessions.appendChild(session_entry)
+				}
+			} else if (data?.['action'] == 'upload') {
+
+				if (data?.['action'] == 'upload' && data?.['file_meta'] !== 'undefined') {
+					let sender = data['from_session'];
+					let transfer_id = data['transfer_id'];
+
+					let encrypted_message = new Uint8Array(JSON.parse("["+atob(data['file_meta'])+"]"));
+					let one_time_key_wrapped = new Uint8Array(JSON.parse("["+atob(data['key'])+"]"));
+
+					let file_meta = {}
+					load_private_key(this.keys['privateKey'], (privateKey) => {
+						extract_one_time_key(one_time_key_wrapped, privateKey, (one_time_key) => {
+							let options = {
+								name: data['key_format'],
+								iv: new Uint8Array(JSON.parse("["+atob(data['iv'])+"]"))
+							};
+
+							decrypt_with_key(options, one_time_key, encrypted_message, (decrypted_file_meta) => {
+								this.downloads[sender][transfer_id]['file_meta'] = JSON.parse(decrypted_file_meta);
+
+								this.create_upload_item(sender, transfer_id);
+								console.log('Finished download:', this.downloads);
+								this.decrypt(sender, transfer_id, options, one_time_key, (data) => {
+									console.log('Decryption complete. Show the data!')
+								});
+							});
+						});
+					});
+				}
+			} else if (data?.['action'] == 'upload-check') {
+				let sender = data['from_session'];
+				let transfer_id = data['transfer_id'];
+
+				if (data['session_token'] != this.downloads[sender][transfer_id]['session_token']) {
+					console.warning("Invalid session token for transfer check.");
+					return;
+				}
+
+				let complete = true;
+				let missing_chunks = []
+				Object.keys(this.downloads[sender][transfer_id]['chunks_data']).forEach((chunk_id) => {
+					if(!this.downloads[sender][transfer_id]['chunks_data'][chunk_id]) {
+						complete = false;
+						missing_chunks.push(chunk_id);
+					}
+				})
+
+				if (complete) {
+					socket.send({
+						'action' : 'upload-complete',
+						'transfer_id' : transfer_id,
+						'session_id' : sender,
+						'from_session' : this.session_id
+					})
+				} else {
+					socket.send({
+						'action' : 'upload-incomplete',
+						'transfer_id' : transfer_id,
+						'session_id' : sender,
+						'from_session' : this.session_id,
+						'chunks_missing' : missing_chunks
+					})
+				}
+
+			} else if (data?.['action'] == 'chunk-transfer') {
+				let sender = data['from_session'];
+				let transfer_id = data['transfer_id'];
+
+				if(typeof this.downloads?.[sender] === 'undefined')
+					this.downloads[sender] = {}
+
+				if(typeof this.downloads?.[sender]?.[transfer_id] === 'undefined') {
+					this.downloads[sender][transfer_id] = {
+						'chunks_data' : {},
+						'file_meta' : null,
+						'from_session' : data['from_session'],
+						'session_id' : data['session_id'],
+						'session_token' : data['session_token']
+					}
+				}
+
+				if (data['session_token'] != this.downloads[sender][transfer_id]['session_token']) {
+					console.warning("Invalid session token for transfer.");
+					return;
+				}
+
+				let chunk = parseInt(data['chunk']);
+				this.downloads[sender][transfer_id]['chunks_data'][chunk] = {
+					'data' : data['encrypted_data'],
+					'chunk_iv' : data['chunk_iv'],
+					'status' : 'pending'
+				}
+
+			} else if (data?.['action'] == 'upload-complete') {
+				let transfer_id = data['transfer_id'];
+
+				delete this.uploads[transfer_id];
+				this.current_upload = null;
+			} else if (data?.['action'] == 'upload-recieved') {
+				let transfer_id = data['transfer_id']
+
+				if(data['missing_chunks'].length == 0) {
+					if(typeof this.uploads?.[transfer_id]?.['verifier'] !== 'undefined')
+						clearTimeout(this.uploads[transfer_id]['verifier']);
+				} else {
+					console.log('Transfer was incomplete. (NOT YET IMPLEMENTED)')
+				}
+			}
+		}
+
+		init() {
+			let body = document.querySelector('.body');
+			body.innerHTML = '';
+
+			let left_side = document.createElement('div');
+			let right_side = document.createElement('div');
+
+			left_side.classList = 'left-side';
+			right_side.classList = 'right-side';
+
+			/*
+			== Own ID field
+			*/
+
+			let my_id = document.createElement('div');
+			my_id.classList = 'self-id';
+			my_id.innerHTML = this.session_id;
+
+			left_side.appendChild(my_id);
+
+			/*
+			== Create input field
+			*/
+
+			let inputs = document.createElement('div');
+			inputs.classList = 'inputs';
+
+			let session_id_input = document.createElement('input');
+			session_id_input.type = 'number';
+			session_id_input.placeholder = 'Enter friends ID';
+			session_id_input.classList = 'input-field input-text';
+
+			let session_id_connect_button = document.createElement('button');
+			session_id_connect_button.innerHTML = 'Connect';
+			session_id_connect_button.classList = 'input-field input-button';
+
+			session_id_connect_button.addEventListener('click', (event) => {
+				session.connect(parseInt(session_id_input.value));
+			})
+
+			inputs.innerHTML = '';
+			inputs.appendChild(session_id_input);
+			inputs.appendChild(session_id_connect_button);
+
+			left_side.appendChild(inputs);
+
+			/*
+			== Create the active sessions scroll-menu
+			*/
+
+			let active_sessions = document.createElement('div');
+			active_sessions.classList = 'current-sessions';
+
+			left_side.appendChild(active_sessions);
+
+			body.appendChild(left_side);
+			body.appendChild(right_side);
+		}
+	}
+
+	window.onload = function() {
+		socket = new slimWebSocket('wss://drop.scientist.cloud');
+
+		socket.subscribe('action', (frame) => {
+			if (typeof frame['action'] !== 'undefined') {
+				if (frame['action'] == 'registered') {
+					session = new DropSession(socket, frame['session_id']);
+					session.init();
+
+					generate_identity((key_type, key_data) => {
+						session.set_key(key_type, key_data);
+					})
+				}
+			}
+		})
+
+		socket.send({'action' : 'register'});
+	}
+</script>
+</head>
+<body>
+	<div class="body">
+	</div>
+</body>
+</html>

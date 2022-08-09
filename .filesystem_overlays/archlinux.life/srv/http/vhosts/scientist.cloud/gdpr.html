@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Evil Scientist</title>
+	<link rel="icon" type="image/png" href="/favicon.png" />
+	<style type="text/css">
+		@font-face {
+			font-family: "Open Sans";
+			src: url("/fonts/OpenSans-Regular.ttf") format("truetype");
+		}
+		body {
+			font-family: "Open Sans";
+			position: relative;
+			margin: 0px;
+			padding: 0px;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			justify-content: center;
+		}
+		img {
+			height: 120px;
+		}
+		input, select {
+			padding: 0.4em;
+			margin-top: 0.2em;
+			margin-bottom: 0.2em;
+		}
+		.container {
+			display: flex;
+			flex-direction: column;
+			margin-left: auto;
+			margin-right: auto;
+			align-items: center;
+			flex: 1;
+		}
+		.info {
+			padding: 1em;
+			color: #C2C2C2;
+			font-size: 0.8em;
+			margin-top: auto;
+		}
+		.contact_btn, .contact_form_btn {
+			color: #C2C2C2;
+			text-decoration: none;
+			border-bottom: 1px solid #C2C2C2;
+			cursor: pointer;
+		}
+
+		.popup {
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			height: 100%;
+
+			backdrop-filter: grayscale(30%) blur(0.15em) sepia(5%);
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			align-items: center;
+		}
+
+		.popup-content {
+			background-color: #FFFFFF;
+			margin-bottom: 2em;
+			margin-top: auto;
+			border: 1px solid #3f51b5;
+			border-radius: 0.4em;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.popup-body {
+			padding: 2em;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.popup-content .title {
+			flex: 1;
+			justify-content: center;
+			align-items: center;
+			align-content: center;
+			display: flex;
+			background-color: #2196f3;
+		}
+
+		.popup-body .description {
+			margin-bottom: 1em;
+		}
+
+		.popup-body .contact-form {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.popup-body .contact-form > * {
+			margin-top: 0.4em;
+		}
+
+		.input {
+			margin-top: 0.4em;
+		}
+
+		.input-area {
+			margin-top: 1em;
+			min-height: 4em;
+		}
+
+		.blog-style {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			flex: 1;
+		}
+
+		.promise {
+			padding: 1em;
+		}
+
+		.button {
+			border-radius: 0.4em;
+			padding: 1em;
+			background-color: #4caf50;
+			border: 1px solid #009688;
+			cursor: pointer;
+			margin-top: 1em;
+		}
+		.button:hover {
+			background-color: #429846;
+		}
+		.button:active {
+			background-color: #3e9041;
+		}
+	</style>
+	<script type="text/javascript">
+		function popup() {
+				let popup_frame = document.createElement('div');
+				popup_frame.classList = 'popup order';
+
+				let popup_container = document.createElement('div');
+				popup_container.classList = 'popup-content';
+
+				let title = document.createElement('div');
+				title.classList = 'title';
+				title.innerHTML = 'Contact Evil Scientist';
+
+				popup_container.appendChild(title);
+
+				let popup_body = document.createElement('div');
+				popup_body.classList = 'popup-body';
+
+				let description = document.createElement('div');
+				description.classList = 'description';
+				description.innerHTML = 'Hi! Don\'t forget to read our GDPR policy behind this popup!<br>When you\'re ready, sign your message using BankID so we know who we\'re talking to when answering.';
+
+				let contact_form = document.createElement('div');
+				contact_form.classList = 'contact-form';
+
+				let personal_number = document.createElement('input');
+				personal_number.classList = 'input social-security';
+				personal_number.placeholder = 'Social security number';
+
+				let email = document.createElement('input');
+				email.classList = 'input e-mail';
+				email.placeholder = 'E-mail address';
+
+				let subject = document.createElement('select');
+				subject.classList = 'input dropdown subject';
+
+				let option1 = document.createElement('option');
+				option1.value = 'Services';
+				option1.innerHTML = 'Orders & Services';
+
+				let option2 = document.createElement('option');
+				option2.value = 'GDPR';
+				option2.innerHTML = 'GDPR';
+
+				let option3 = document.createElement('option');
+				option3.value = 'General';
+				option3.innerHTML = 'General inqueries';
+
+				subject.appendChild(option1);
+				subject.appendChild(option2);
+				subject.appendChild(option3);
+
+				let order_number = document.createElement('input');
+				order_number.classList = 'input order-number';
+				order_number.placeholder = 'Order number (optional)';
+
+				let free_text = document.createElement('textarea');
+				free_text.classList = 'input-area';
+				free_text.placeholder = 'Enter your message for us to read.';
+
+				let submit = document.createElement('button');
+				submit.classList = 'button';
+				submit.innerHTML = 'Sign with BankID and Submit'
+
+				contact_form.appendChild(personal_number);
+				contact_form.appendChild(email);
+				contact_form.appendChild(subject);
+				contact_form.appendChild(order_number);
+				contact_form.appendChild(free_text);
+				contact_form.appendChild(submit)
+
+				popup_body.appendChild(description);
+				popup_body.appendChild(contact_form);
+
+				popup_container.appendChild(popup_body);
+				popup_frame.appendChild(popup_container)
+
+				document.getElementsByTagName("body")[0].appendChild(popup_frame);
+		}
+
+		window.onload = () => {
+			document.querySelector('.contact_btn').addEventListener('click', () => {
+				popup()
+			})
+			document.querySelector('.contact_form_btn').addEventListener('click', () => {
+				popup()
+			})
+
+			document.querySelector('.maddr').innerHTML = '<a href="mailto:'+atob('Z2RwckBzY2llbnRpc3QuY2xvdW'+'Q=')+'">'+atob('Z2RwckBzY2llbnRpc3QuY2xvdW'+'Q=')+'</a>';
+		}
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div class="blog-style">
+			<img src="./logo_small.jpg">
+			<span class="promise">
+				We're glad you're here, that means you care about your data!<br>
+				<br>
+				First of all and most importantly, we'll never give your information to any third parties unless a crime has been committed!<br>
+				We will also do our best to keep your information and integrity safe and promise to never sell your data to third parties.<br>
+				<br>
+				<br>
+				To keep this short, we save your data in order to process orders and messages between you and us.<br>
+				We only save your data <i>(more on what type of data we save later)</i> in these cases:<br>
+				<ul>
+					<li>When processing an order</li>
+					<li>While a conversation is active using our contact forms</li>
+					<li>To analyze, track or process IT-related tasks such as incidents or debugging.</li>
+				</ul>
+				<h3>While processing an order</h3>
+				When your order is complete, and you've acknowledged delivery, you'll be asked to save your data with us.<br>
+				The default action after delivery of a bike is that we remove data related to you as an individual within 90 days to comply with GDPR.<br>
+				This means we'll never be able to go back to your order and see information regarding you as a customer in the order.<br>
+				We will still keep the unique order number, and what the order contained (long range, etc) for statistics.<br>
+				However, if you opt in to save your data with us - we'll save it until you request us to delete it.<br>
+				This would help us in contacting you in case of security patches for the ECU or in case of faulty hardware from the supplier etc.<br>
+				You can also opt in to get regular service reminders on your bike for instance. Below we'll outline more on what data we save.<br>
+				<br>
+				<i>(To be more technical, we also delete your data from backups so there is no way for us to restore your information once gone)</i>
+				<br>
+				<h3>While communicating with us</h3>
+				We will keep some information about you such as contact information in order to communicate with you.<br>
+				After for instance a question has been answered or an issue with our product have been resolved,<br>
+				you will recieve a log of our conversation via e-mail after which we will delete the information surrounding that dialogue.<br>
+				If you have an active order, we'll still keep information regarding the order in accordance with the above section.<br>
+				<br>
+				<h3>IT-related logs and data</h3>
+				When you use our services, traces that could identify you will be logged in our systems.<br>
+				Such data can be your IP, your browsing behavior on our site and possible data you submit using any of our forms.<br>
+				We retain this data for up to 5 years in order to comply with local logging rules. These logs might be handed out to authorities if a crime has been committed.<br>
+				<br>
+				<h3>What data do we keep?</h3>
+				We save but not limited to the following data:<br>
+				<ul>
+					<li>Personal number</li>
+					<li>E-mail address</li>
+					<li>Phone number</li>
+					<li>Order numbers</li>
+					<li>BankID transaction ID's <i>(Internally called <a href="https://www.bankid.com/assets/bankid/rp/bankid-relying-party-guidelines-v3.5.pdf" target="_blank">orderRef</a>)</i></li>
+					<li>Shipping addresses</li>
+					<li>Payment and transactions history</li>
+					<li>Any data you supply freely in forms or otherwise</li>
+					<li>Your IP Address used when communicating with our servers</li>
+					<li>Any type of HTTP-related data used to communicate with our servers</li>
+				</ul>
+				And any type of data related to these (status changes, time stamps etc).
+				<h3>Exceptions to the ahove</h3>
+				Any financial records between you and us <i>(Ond Vetenskapsman)</i> will be saved for up to 15 years regardless of you requesting to delete your data.<br>
+				The information in these financial records will contain contact information such as name and address.<br>
+				This in order to comply with local financial laws.
+				<h3>To manage your data</h3>
+				You are entitled to request your data, to do so simply use the <span class="contact_form_btn">contact form</span> and identify using BankID or e-mail us at <span class="maddr"></span>.<br>
+				If you chose to use way of e-mail, then you'll be sent a BankID identification link in order to identify yourself before we can see the message.<br>
+				This is so we know who we're talking to.<br>
+				<br>
+				You can also request us to delete your data (Any data that we're not obligated by law to keep for a certain time).<br>
+				To do so, follow the same steps as mentioned in the above section.
+
+			</span>
+			<span class="info">Moms Nr: SE871210397001 | <span class="contact_btn">Contact</span></span>
+		</div>
+	</div>
+</body>
+</html>
