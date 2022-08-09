@@ -1,0 +1,8 @@
+[Match]
+Name=ens192
+
+[Network]
+Address=109.74.10.228/24
+Gateway=109.74.10.1
+DNS=8.8.8.8
+DNS=127.0.0.1
