@@ -1,0 +1,15 @@
+[Unit]
+Description=slim Servicese
+After=network.target
+Wants=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+WorkingDirectory=/srv/http/
+ExecStart=/usr/bin/python3 -u /srv/http/server.py
+ExecStop=/usr/bin/pkill -f server.py
+
+[Install]
+WantedBy=multi-user.target
