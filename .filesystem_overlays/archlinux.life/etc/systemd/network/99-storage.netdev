@@ -1,0 +1,14 @@
+[NetDev]
+Name=storage
+Kind=wireguard
+Description=WireGuard to storage server
+
+[WireGuard]
+ListenPort=51871
+PrivateKey={privkey_storage}
+
+[WireGuardPeer]
+PublicKey={storage_public_key}
+PresharedKey={storage_shared_key}
+AllowedIPs=10.0.2.2/32
+Endpoint=seed.hvornum.se:51902
