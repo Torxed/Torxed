@@ -1,0 +1,14 @@
+[NetDev]
+Name=home
+Kind=wireguard
+Description=WG tunnel to home
+
+[WireGuard]
+ListenPort=55855
+PrivateKey={privkey_for_archlinux_to_home}
+
+[WireGuardPeer]
+PublicKey={public_key_for_home}
+PresharedKey={shared_secret_home}
+AllowedIPs=10.56.1.2/32,172.22.0.0/24
+PersistentKeepalive = 10
