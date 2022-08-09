@@ -1,0 +1,13 @@
+[NetDev]
+Name=phone
+Kind=wireguard
+Description=WireGuard tunnel to phone
+
+[WireGuard]
+ListenPort=51904
+PrivateKey={private_key_for_archlinux_to_phone}
+
+[WireGuardPeer]
+PublicKey={public_key_of_phone}
+PresharedKey={shared_secret_phone}
+AllowedIPs=10.0.99.2/32
