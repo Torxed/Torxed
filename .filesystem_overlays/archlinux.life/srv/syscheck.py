@@ -209,8 +209,7 @@ while p.poll():
 	if journal.process() != systemd.journal.APPEND:
 		continue
 
-	# Your example code has too many get_next() (i.e, "while journal.get_next()" and "for event in journal") which cause skipping entry.
-	# Since each iteration of a systemd.journal.Reader() object is equal to "get_next()", just do simple iteration.
+	# Funnel off the journal for related messages
 	for entry in journal:
 		#print(entry.get('MESSAGE'))
 		if entry.get('_SYSTEMD_UNIT', 'unknown') == 'sshd.service' and entry.get('MESSAGE') and contains(entry['MESSAGE'], failed_ssh_patterns) is False:
@@ -225,6 +224,7 @@ while p.poll():
 			server.sendmail(f"{ssh_sender}@{domain}", f"{reciever}@{domain}", f"User {user} has logged in via SSH.\n\nDebug information: {json.dumps(entry, cls=JSON_Typer, indent=4)}")
 			server.quit()
 
+	# Check the disk space left
 	statvfs = os.statvfs('/')
 	if (disk_size_left := (int(statvfs.f_frsize * statvfs.f_bfree / 1024 / 1024 / 1024 * 100) / 100)) < 5:
 		if time.time() - last_disk_mail > 86400: # 24h
@@ -236,7 +236,7 @@ while p.poll():
 
 			last_disk_mail = time.time()
 
-
+	# Check if packages are up to date
 	if time.time() - last_linux_update_check > 86400: #24h
 		found_one_out_of_date = False
 		for package in packages:
