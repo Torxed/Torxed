@@ -14,10 +14,20 @@ On the host
 * :code:`pacman -S pipewire pipewire-alsa`
 * :code:`yay -S vban-git` which installs the `vban`_ github repo
 
+.. warning::
+
+    And until I figure out how to separate the microphone loop-back (Host -> Client -> Host),
+    You also need `scream`_ installed, run :code:`yay -S scream`.
+
 On the network client (windows)
 -------------------------------
 
 Install `Voice Meeter Banana`_ and `VB-Cable`_
+
+.. warning::
+
+    And until I figure out how to separate the microphone loop-back (Host -> Client -> Host),
+    You also need `scream`_ installed, you'll find it under https://github.com/duncanthrax/scream/releases for Windows.
 
 Configuration
 =============
@@ -25,7 +35,7 @@ Configuration
 Host
 ====
 
-It should be enough to just have :code:`vban-git` installed really.
+Make sure :code:`vban-git` got installed.
 
 .. Setup a virtual mixed source 
 .. And set up a virtual microphone
@@ -48,6 +58,12 @@ Press the :code:`VBAN` icon and create/modify:
 
 Then press :code:`On` on both of them.
 
+.. note::
+
+   If you hear your own microphone, in Voice Meeter :code:`VBAN` options disable the :code:`Outgoing Streams`, and let :code:`scream` deal with it.
+
+.. , create a second :code:`outgoing` stream called :code:`Stream2` and set the source to :code:`BUS A2`. Deactive the first stream and enable the second instead. And later, instead of :code:`Stream1` listen for :code:`Stream2` in the :code:`vban_receptor`. Then, in the Voice Meeter Banana settings/mixer, set :code:`A1` to :code:`MME: CABLE Input (VB-Audio Virtual Cable)` and :code:`A2` should be set to nothing. This way normal desktop applications should be able to pick it up but playback of the mic will not be redirected to the network stream.
+
 Running
 =======
 
@@ -58,6 +74,7 @@ Run:
 
 * :code:`vban_receptor --ipaddress=172.22.0.81 --port 6980 --streamname windows`
 * :code:`vban_emitter --ipaddress=172.22.0.81 --port=6980 --streamname=Stream1`
+* :code:`scream -i internet -t 20` where :code:`internet` is the interface where the VM is bridged on.
 
 Client
 ------
@@ -67,3 +84,4 @@ Press :code:`VBAN is OFF` so it turns on, after which VBAN should be emitting on
 .. _`Voice Meeter Banana`: https://vb-audio.com/Voicemeeter/banana.htm
 .. _`VB-Cable`: https://vb-audio.com/Cable/index.htm
 .. _`vban`: https://github.com/quiniouben/vban/
+.. _`scream`: https://github.com/duncanthrax/scream
