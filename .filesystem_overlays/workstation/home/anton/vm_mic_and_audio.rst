@@ -3,8 +3,8 @@ Installation
 
 This reminder-note assumes:
 
-* `Arch Linux` host OS has an IP of `172.22.0.80`
-* `Windows` VM has an IP of `172.22.0.81`
+* `Arch Linux` host OS has an IP of :code:`172.22.0.80` on a bridge called :code:`internet`
+* `Windows` VM has an IP of :code:`172.22.0.81` and it's :code:`tap` interface is connected to :code:`internet`.
 * The microphone is on the host OS
 * The audio output you want to play back is sent from the VM to the host OS
 
