@@ -12,7 +12,7 @@ On the host
 -----------
 
 * :code:`pacman -S pipewire pipewire-alsa`
-* :code:`yay -S vban-git`
+* :code:`yay -S vban-git` which installs the `vban`_ github repo
 
 On the network client (windows)
 -------------------------------
@@ -62,7 +62,8 @@ Run:
 Client
 ------
 
-Press `VBAN is OFF` so it turns on, after which VBAN should be emitting on port :code:`6980`.
+Press :code:`VBAN is OFF` so it turns on, after which VBAN should be emitting on port :code:`6980` by default, you'll see the port in the top header of :code:`VBAN` options in `Voice Meeter Banana`_.
 
 .. _`Voice Meeter Banana`: https://vb-audio.com/Voicemeeter/banana.htm
 .. _`VB-Cable`: https://vb-audio.com/Cable/index.htm
+.. _`vban`: https://github.com/quiniouben/vban/
