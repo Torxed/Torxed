@@ -20,6 +20,7 @@ GITHUB_APP_ID = 69801 # https://github.com/settings/apps/slimhttp-discord
 GITHUB_CLIENT_ID = "<client id>"
 GITHUB_APP_SECRET = "<app seecret>" # https://github.com/settings/applications/1321280
 GITHUB_WEBHOOK_SECRET = '<webhook secret>'
+MAXMIND_API_KEY = '<maxmind api key>'
 
 cache_info = {
 	'server_name' : 'slimHTTP',
@@ -217,7 +218,7 @@ def on_request(request):
 def docs_handler(request):
 	if not os.path.isfile('geolite.db'):
 		import tarfile
-		response = urllib.request.urlopen("https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=d6CuyR4k1It7iYPM&suffix=tar.gz")
+		response = urllib.request.urlopen(f"https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key={MAXMIND_API_KEY}&suffix=tar.gz")
 		with open('geolite.db.tar.gz', 'wb') as db:
 			db.write(response.read())
 
