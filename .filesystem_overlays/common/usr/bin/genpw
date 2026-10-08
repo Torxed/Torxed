@@ -1,10 +1,15 @@
-#!/usr/bin/python
+#!/bin/python
 
+import random
 import string
-import secrets
 import sys
 
-if not len(sys.argv) > 1:
-	sys.argv.append('24')
+res = ''
+length = int(sys.argv[1]) if len(sys.argv) >= 2 else 12
+# charset = string.printable[:-5].replace('`', '').replace('^', '').replace('|', '')
+charset = string.ascii_letters + string.digits
 
-print(''.join(secrets.choice(string.printable) for i in range(int(sys.argv[1]))).replace('\n', string.printable.replace('\n', '')))
+while len(res) < length:
+	res += random.choice(charset)
+
+print(res)

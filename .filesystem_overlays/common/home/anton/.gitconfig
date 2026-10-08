@@ -1,0 +1,11 @@
+[user]
+        name = Anton Hvornum
+        email = anton@hvornum.se
+        signingkey = 0BC25578115A3122B25210ED5BB82EE1CB7F1A7D
+
+[log]
+        showSignature = true
+[init]
+        defaultBranch = main
+[core]
+        excludesFile = ~/.gitignore
